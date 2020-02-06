@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <link rel="canonical" href="www.asyu17.cn/2020/01/30/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%945%E3%80%81%E3%80%90%E8%B6%85%E8%AF%A6%E7%BB%86%E8%AE%B0%E5%BD%95%E3%80%91%E4%BB%8E%E7%88%AC%E5%8F%96%E5%BE%AE%E5%8D%9A%E8%AF%84%E8%AE%BA%E6%95%B0%E6%8D%AE%EF%BC%88%E5%85%8D%E7%99%BB%E9%99%86%EF%BC%89%E5%88%B0%E7%94%9F%E6%88%90%E8%AF%8D%E4%BA%91.html">
+    
+    
+    <title>【Python爬虫实例学习篇】——5、【超详细记录】从爬取微博评论数据（免登陆）到生成词云 | 小术快跑呀 | asyu17</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python,爬虫,bilibili">
+    <meta name="description" content="【Python爬虫实例学习篇】——5、【超详细记录】从爬取微博评论数据（免登陆）到生成词云近段时间新型冠状病毒的问题引起了全国人民的广泛关注，对于这一高传染性的病毒，人们有着不同的声音，而我想通过大数据看看大多数人是怎么想的。 精彩部分提醒：（1）微博评论页详情链接为一个js脚本（2）获取js脚本链接需要该条微博的mid参数（3）获取mid参数需要访问微博主页（4）访问微博主页需要先进行访客认证（">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Python爬虫实例学习篇】——5、【超详细记录】从爬取微博评论数据（免登陆）到生成词云">
+<meta property="og:url" content="https://www.asyu17.cn/2020/01/30/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%945%E3%80%81%E3%80%90%E8%B6%85%E8%AF%A6%E7%BB%86%E8%AE%B0%E5%BD%95%E3%80%91%E4%BB%8E%E7%88%AC%E5%8F%96%E5%BE%AE%E5%8D%9A%E8%AF%84%E8%AE%BA%E6%95%B0%E6%8D%AE%EF%BC%88%E5%85%8D%E7%99%BB%E9%99%86%EF%BC%89%E5%88%B0%E7%94%9F%E6%88%90%E8%AF%8D%E4%BA%91.html">
+<meta property="og:site_name" content="小术快跑呀">
+<meta property="og:description" content="【Python爬虫实例学习篇】——5、【超详细记录】从爬取微博评论数据（免登陆）到生成词云近段时间新型冠状病毒的问题引起了全国人民的广泛关注，对于这一高传染性的病毒，人们有着不同的声音，而我想通过大数据看看大多数人是怎么想的。 精彩部分提醒：（1）微博评论页详情链接为一个js脚本（2）获取js脚本链接需要该条微博的mid参数（3）获取mid参数需要访问微博主页（4）访问微博主页需要先进行访客认证（">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200127204750959.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020012721000264.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200127211613129.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200127211944984.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020012721215414.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200127212238464.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200127214012779.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200127214655927.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200129144606242.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020012915201897.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200129155503595.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200129155826279.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200129205634431.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200129215445422.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200129224426256.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200130140926192.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200130155822422.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020013016343122.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200130195958811.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200130200325296.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200130200913232.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200121125047312.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="article:published_time" content="2020-01-30T12:04:01.000Z">
+<meta property="article:modified_time" content="2020-02-06T13:04:00.710Z">
+<meta property="article:author" content="ASYU17">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="bilibili">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200127204750959.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center">
+    
+        <link rel="alternate" type="application/atom+xml" title="小术快跑呀" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">ASYU17</h5>
+          <a href="mailto:asyu12@163.com" title="asyu12@163.com" class="mail">asyu12@163.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/asyu17" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://blog.csdn.net/qq_40528553" target="_blank" >
+                <i class="icon icon-lg icon-copyright"></i>
+                Csdn
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/custom"  >
+                <i class="icon icon-lg icon-link"></i>
+                关于
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">【Python爬虫实例学习篇】——5、【超详细记录】从爬取微博评论数据（免登陆）到生成词云</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">【Python爬虫实例学习篇】——5、【超详细记录】从爬取微博评论数据（免登陆）到生成词云</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2020-01-30T12:04:01.000Z" itemprop="datePublished" class="page-time">
+  2020-01-30
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91/">【Python爬虫实例学习篇】</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#【Python爬虫实例学习篇】——5、【超详细记录】从爬取微博评论数据（免登陆）到生成词云"><span class="post-toc-number">1.</span> <span class="post-toc-text">【Python爬虫实例学习篇】——5、【超详细记录】从爬取微博评论数据（免登陆）到生成词云</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#精彩部分提醒："><span class="post-toc-number">2.</span> <span class="post-toc-text">精彩部分提醒：</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#爬取微博篇论数据"><span class="post-toc-number">3.</span> <span class="post-toc-text">爬取微博篇论数据</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#寻找评论页"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">寻找评论页</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#第一步：寻找评论页"><span class="post-toc-number">3.1.1.</span> <span class="post-toc-text">第一步：寻找评论页</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#第二步：找到js包地址"><span class="post-toc-number">3.1.2.</span> <span class="post-toc-text">第二步：找到js包地址</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#第三步：获取评论页链接"><span class="post-toc-number">3.1.3.</span> <span class="post-toc-text">第三步：获取评论页链接</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#获取并评论"><span class="post-toc-number">4.</span> <span class="post-toc-text">获取并评论</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#GetWeiBoRemark-py"><span class="post-toc-number">5.</span> <span class="post-toc-text"> GetWeiBoRemark.py </span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#3、生成词云"><span class="post-toc-number">6.</span> <span class="post-toc-text">3、生成词云</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#微信公众号："><span class="post-toc-number">6.0.1.</span> <span class="post-toc-text">&#x3D;&#x3D;微信公众号：&#x3D;&#x3D;</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-【Python爬虫实例学习篇】——5、【超详细记录】从爬取微博评论数据（免登陆）到生成词云"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">【Python爬虫实例学习篇】——5、【超详细记录】从爬取微博评论数据（免登陆）到生成词云</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2020-01-30 20:04:01" datetime="2020-01-30T12:04:01.000Z"  itemprop="datePublished">2020-01-30</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91/">【Python爬虫实例学习篇】</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="【Python爬虫实例学习篇】——5、【超详细记录】从爬取微博评论数据（免登陆）到生成词云"><a href="#【Python爬虫实例学习篇】——5、【超详细记录】从爬取微博评论数据（免登陆）到生成词云" class="headerlink" title="【Python爬虫实例学习篇】——5、【超详细记录】从爬取微博评论数据（免登陆）到生成词云"></a>【Python爬虫实例学习篇】——5、【超详细记录】从爬取微博评论数据（免登陆）到生成词云</h1><p>近段时间新型冠状病毒的问题引起了全国人民的广泛关注，对于这一高传染性的病毒，人们有着不同的声音，而我想通过大数据看看大多数人是怎么想的。</p>
+<h1 id="精彩部分提醒："><a href="#精彩部分提醒：" class="headerlink" title="精彩部分提醒："></a><strong>精彩部分提醒：</strong></h1><p>（1）微博评论页详情链接为一个js脚本<br>（2）获取js脚本链接需要该条微博的mid参数<br>（3）获取mid参数需要访问微博主页<br>（4）访问微博主页需要先进行访客认证<br>（5）微博主页几乎是由弹窗构成，所有html代码被隐藏在FM.view()函数的参数中，该参数是json格式</p>
+<p><strong>工具：</strong></p>
+<ol>
+<li>Python 3.6</li>
+<li>requests 库</li>
+<li>json 库</li>
+<li>lxml 库</li>
+<li>urllib 库</li>
+<li>jieba 库（进行分词）</li>
+<li>WordCloud 库（产生词云）</li>
+</ol>
+<p><strong>目录：</strong></p>
+<ol>
+<li><p><a href="#jump1">爬取微博评论数据</a></p>
+</li>
+<li><p><a href="#jump2">GetWeiBoRemark.py</a></p>
+</li>
+<li><p><a href="#jump3">生成词云</a></p>
+<h1 id="爬取微博篇论数据"><a href="#爬取微博篇论数据" class="headerlink" title="爬取微博篇论数据"></a><span id="jump1">爬取微博篇论数据</span></h1></li>
+</ol>
+<p>以<a href="https://weibo.com/cctvxinwen" target="_blank" rel="noopener">央视新闻官方微博</a>置顶的第一条微博为例，爬取其评论数据。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/20200127204750959.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="央视新闻微博首页" title="">
+                </div>
+                <div class="image-caption">央视新闻微博首页</div>
+            </figure>
+
+<h2 id="寻找评论页"><a href="#寻找评论页" class="headerlink" title="寻找评论页"></a>寻找评论页</h2><h3 id="第一步：寻找评论页"><a href="#第一步：寻找评论页" class="headerlink" title="第一步：寻找评论页"></a>第一步：寻找评论页</h3><p>先用<strong>Ctrl+Shift+C</strong> 选取评论标签查看其html代码，发现其链接为一个js脚本，那么尝试用fddler看看能不能抓到这个js脚本的包，得到这个js的地址。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/2020012721000264.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="评论页地址为一个脚本" title="">
+                </div>
+                <div class="image-caption">评论页地址为一个脚本</div>
+            </figure>
+<p>找到疑似js包，将数据解码，确认是我们要找的包。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/20200127211613129.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="疑似js包" title="">
+                </div>
+                <div class="image-caption">疑似js包</div>
+            </figure>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/20200127211944984.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="解码与json解析结果" title="">
+                </div>
+                <div class="image-caption">解码与json解析结果</div>
+            </figure>
+
+<p>同时，根据“查看更多”可以确定跳转的链接，将这一结果在json解析结果中搜索，可以进一步确定这个js包就是我们要找的包。接下来需要确定这个js包是来源于哪。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/2020012721215414.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="找链接" title="">
+                </div>
+                <div class="image-caption">找链接</div>
+            </figure>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/20200127212238464.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="确定链接地址" title="">
+                </div>
+                <div class="image-caption">确定链接地址</div>
+            </figure>
+<h3 id="第二步：找到js包地址"><a href="#第二步：找到js包地址" class="headerlink" title="第二步：找到js包地址"></a>第二步：找到js包地址</h3><p><strong>js包地址为：</strong>“<a href="https://weibo.com/aj/v6/comment/small?ajwvr=6&amp;act=list&amp;mid=4465267293291962&amp;uid=3655689037&amp;isMain=true&amp;dissDataFromFeed=%5Bobject%20Object%5D&amp;ouid=2656274875&amp;location=page_100206_home&amp;comment_type=0&amp;_t=0&amp;__rnd=1580130440282”，链接很长，且参数很多，根据以往经验，我们尝试删除一些参数进行访问测试。" target="_blank" rel="noopener">https://weibo.com/aj/v6/comment/small?ajwvr=6&amp;act=list&amp;mid=4465267293291962&amp;uid=3655689037&amp;isMain=true&amp;dissDataFromFeed=%5Bobject%20Object%5D&amp;ouid=2656274875&amp;location=page_100206_home&amp;comment_type=0&amp;_t=0&amp;__rnd=1580130440282”，链接很长，且参数很多，根据以往经验，我们尝试删除一些参数进行访问测试。</a><br>经过测试发现只需==mid==这一个参数即可获取该数据包。<br>所以<strong>有效js包地址为：</strong>”<a href="https://weibo.com/aj/v6/comment/small?mid=4465267293291962“。" target="_blank" rel="noopener">https://weibo.com/aj/v6/comment/small?mid=4465267293291962“。</a></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/20200127214012779.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="寻找有效js地址" title="">
+                </div>
+                <div class="image-caption">寻找有效js地址</div>
+            </figure>
+<p>那么，接下来的工作就是去寻找mid这以参数的值（猜测应该是微博的唯一序列号）。在Fiddler中搜索 <strong>“mid=4465267293291962”</strong>可以发现在央视新闻首页中，每条微博里面都包含了该微博的mid信息。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/20200127214655927.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="找到mid" title="">
+                </div>
+                <div class="image-caption">找到mid</div>
+            </figure>
+<p>用<strong>Ctrl+Shift+C</strong> 任意选取一条微博，可以发现有一个 <strong>“mid”</strong> 属性，里面包含mid的数据</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/20200129144606242.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="获取mid" title="">
+                </div>
+                <div class="image-caption">获取mid</div>
+            </figure>
+
+<p>用XPath Helper进行调试，没有问题，接下来在python上实现这部分代码，==<a href="#jump">（经过后面测试发现获取评论数据只需获取微博的mid即可，因此下面这几步可以跳过，但是为例保证探索过程的完整性，我将其留在了这里）</a>==</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/2020012915201897.png#pic_center" alt="xpath调试" title="">
+                </div>
+                <div class="image-caption">xpath调试</div>
+            </figure>
+
+<p><strong>得到评论页的代码：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line"></span><br><span class="line">requests.packages.urllib3.disable_warnings()</span><br><span class="line"></span><br><span class="line">name=<span class="string">"cctvxinwen"</span></span><br><span class="line">home_url=<span class="string">'https://weibo.com/'</span>+name</span><br><span class="line">headers=&#123;</span><br><span class="line">    <span class="string">"User-Agent"</span>: <span class="string">"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3970.5 Safari/537.36"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">session=requests.session()</span><br><span class="line">res=session.get(home_url,headers=headers,timeout=<span class="number">20</span>,verify=<span class="literal">False</span>)</span><br><span class="line">html=etree.HTML(res.content.decode(<span class="string">'gb2312'</span>,<span class="string">"ignore"</span>))</span><br><span class="line">mid_list=html.xpath(<span class="string">"//div/@mid"</span>)</span><br></pre></td></tr></table></figure>
+<p>本以为可以轻松获取新闻主页，结果发现若是没有附带cookie的话，会自动跳转到微博登陆验证页面。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/20200129155503595.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="微博验证页面" title="">
+                </div>
+                <div class="image-caption">微博验证页面</div>
+            </figure>
+<p>用chrome的无痕访问结合fiddler，重新抓包，可以清晰的发现微博的验证登陆流程。其中最重要的是第11号包，其余6号包用于提供参数解析，9号包提供==参数s==和参数==sp==的数据，8号包用于提供9号包访问链接中参数的数据。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/20200129155826279.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="微博验证流程" title="">
+                </div>
+                <div class="image-caption">微博验证流程</div>
+            </figure>
+
+
+<p>对于我们的爬虫来说，只需要从第8号包开始访问即可，8号包需要提交的数据为(常量)：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cb=gen_callback&amp;fp=&#123;<span class="string">"os"</span>:<span class="string">"1"</span>,<span class="string">"browser"</span>:<span class="string">"Chrome80,0,3970,5"</span>,<span class="string">"fonts"</span>:<span class="string">"undefined"</span>,<span class="string">"screenInfo"</span>:<span class="string">"1920*1080*24"</span>,<span class="string">"plugins"</span>:<span class="string">"Portable Document Format::internal-pdf-viewer::Chrome PDF Plugin|::mhjfbmdgcfjbbpaeojofohoefgiehjai::Chrome PDF Viewer|::internal-nacl-plugin::Native Client"</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，在使用requests库时，需要向协议头中添加：<br>==’Content-Type’: ‘application/x-www-form-urlencoded’==，否则返回数据为空。</p>
+<p>9号包的链接为：<br> <strong>“<a href="https://passport.weibo.com/visitor/visitor?a=incarnate&amp;t=39dNzddUHqqZOWZQbMiDrOvkea/y7s06WFyX%2BzsGk8w%3D&amp;w=2&amp;c=095&amp;gc=&amp;cb=cross_domain&amp;from=weibo&amp;_rand=0.5282100349168277”" target="_blank" rel="noopener">https://passport.weibo.com/visitor/visitor?a=incarnate&amp;t=39dNzddUHqqZOWZQbMiDrOvkea/y7s06WFyX%2BzsGk8w%3D&amp;w=2&amp;c=095&amp;gc=&amp;cb=cross_domain&amp;from=weibo&amp;_rand=0.5282100349168277”</a></strong>，其中_rand参数可以忽略。这里需要注意，添加tid参数时，tid参数需要 <strong>url编码</strong>。<br> 在完成9号包的访问后，就可以获取央视新闻微博的主页了：<br> <figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/20200129205634431.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="央视新闻微博主页" title="">
+                </div>
+                <div class="image-caption">央视新闻微博主页</div>
+            </figure></p>
+<h3 id="第三步：获取评论页链接"><a href="#第三步：获取评论页链接" class="headerlink" title="第三步：获取评论页链接"></a>第三步：获取评论页链接</h3><p>在这里有一个很有意思的现象，当我在网页用xpath helper调试的时候，能够非常容易的获取对应的属性值，但是一旦将该xpath语法应用与python中进行解析时，总是得到空的数据。经过一番调试发现，是由于微博这个 ==“欧盟隐私弹窗”==所致。所有我们需要的数据全部被隐藏在这个弹窗之中，微博页面的所有内容通过调用 <strong>FM.view()</strong> 这个函数显示出来，网页的html代码就隐藏在 <strong>FM.view()</strong> 函数的json格式的参数中。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/20200129215445422.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="寻找评论链接" title="">
+                </div>
+                <div class="image-caption">寻找评论链接</div>
+            </figure>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/20200129224426256.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="解析FM.view()的参数" title="">
+                </div>
+                <div class="image-caption">解析FM.view()的参数</div>
+            </figure>
+<p>第一部分的代码为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> parse</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line"></span><br><span class="line">requests.packages.urllib3.disable_warnings()</span><br><span class="line">session = requests.session()</span><br><span class="line">session.verify = <span class="literal">False</span></span><br><span class="line">session.timeout = <span class="number">20</span></span><br><span class="line"></span><br><span class="line">name = <span class="string">"cctvxinwen"</span></span><br><span class="line">home_url = <span class="string">'https://weibo.com/'</span> + name</span><br><span class="line">url1 = <span class="string">"https://passport.weibo.com/visitor/genvisitor"</span></span><br><span class="line">urljs=<span class="string">'https://weibo.com/aj/v6/comment/small?mid='</span></span><br><span class="line"></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">"User-Agent"</span>: <span class="string">"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3970.5 Safari/537.36"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">data = <span class="string">"cb=gen_callback&amp;fp=%7B%22os%22%3A%221%22%2C%22browser%22%3A%22Chrome80%2C0%2C3970%2C5%22%2C%22fonts%22%3A%22undefined%22%2C%22screenInfo%22%3A%221920*1080*24%22%2C%22plugins%22%3A%22Portable%20Document%20Format%3A%3Ainternal-pdf-viewer%3A%3AChrome%20PDF%20Plugin%7C%3A%3Amhjfbmdgcfjbbpaeojofohoefgiehjai%3A%3AChrome%20PDF%20Viewer%7C%3A%3Ainternal-nacl-plugin%3A%3ANative%20Client%22%7D"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取tid</span></span><br><span class="line">headers.update(&#123;<span class="string">'Content-Type'</span>: <span class="string">'application/x-www-form-urlencoded'</span>&#125;)</span><br><span class="line">tid = json.loads(session.post(url=url1, headers=headers, data=data).content.decode(<span class="string">'utf-8'</span>)[<span class="number">36</span>:<span class="number">-2</span>])[<span class="string">'data'</span>][<span class="string">'tid'</span>]</span><br><span class="line"><span class="keyword">del</span> headers[<span class="string">'Content-Type'</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取访客cookie</span></span><br><span class="line">url2 = <span class="string">"https://passport.weibo.com/visitor/visitor?a=incarnate&amp;t="</span> + parse.quote(</span><br><span class="line">    tid) + <span class="string">"&amp;w=2&amp;c=095&amp;gc=&amp;cb=cross_domain&amp;from=weibo"</span></span><br><span class="line">session.get(url=url2.encode(<span class="string">'utf-8'</span>), headers=headers)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 访问微博主页，解析获取评论页面</span></span><br><span class="line">res = session.get(url=home_url, headers=headers)</span><br><span class="line">html = etree.HTML(res.content.decode(<span class="string">'utf-8'</span>, <span class="string">"ignore"</span>))</span><br><span class="line"><span class="comment"># 含有mid的html代码被隐藏在这一个json中</span></span><br><span class="line">mid_json = json.loads(html.xpath(<span class="string">"//script"</span>)[<span class="number">38</span>].text[<span class="number">8</span>:<span class="number">-1</span>])</span><br><span class="line">mid_html=etree.HTML(mid_json[<span class="string">'html'</span>])</span><br><span class="line">mids=mid_html.xpath(<span class="string">"//div/@mid"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取第一条微博的js包地址</span></span><br><span class="line">urljs=urljs+str(mids[<span class="number">0</span>])</span><br><span class="line">res=session.get(url=urljs, headers=headers)</span><br><span class="line">js_json_html=json.loads(res.content)[<span class="string">'data'</span>][<span class="string">'html'</span>]</span><br><span class="line">print(js_json_html)</span><br><span class="line">print(<span class="string">"该微博当前评论数为："</span>+str(json.loads(res.content)[<span class="string">'data'</span>][<span class="string">'count'</span>]))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解析获取评论页地址</span></span><br><span class="line">js_html=etree.HTML(js_json_html)</span><br><span class="line">url_remark=js_html.xpath(<span class="string">"//a[@target='_blank']/@href"</span>)[<span class="number">-1</span>]</span><br><span class="line">url_remark=<span class="string">"https:"</span>+url_remark</span><br></pre></td></tr></table></figure>
+<h1 id="获取并评论"><a href="#获取并评论" class="headerlink" title="获取并评论"></a>获取并评论</h1><p>获取评论页后，我们非常容易的就能找到评论数据的json包，如图所示：</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/20200130140926192.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="评论json包" title="">
+                </div>
+                <div class="image-caption">评论json包</div>
+            </figure>
+<p>该json包的链接为：<strong>“<a href="https://weibo.com/aj/v6/comment/big?ajwvr=6&amp;id=4466098865136889&amp;root_comment_max_id=206048831614549&amp;root_comment_max_id_type=0&amp;root_comment_ext_param=&amp;page=4&amp;filter=hot&amp;sum_comment_number=13481&amp;filter_tips_before=1&amp;from=singleWeiBo&amp;__rnd=1580364082863”" target="_blank" rel="noopener">https://weibo.com/aj/v6/comment/big?ajwvr=6&amp;id=4466098865136889&amp;root_comment_max_id=206048831614549&amp;root_comment_max_id_type=0&amp;root_comment_ext_param=&amp;page=4&amp;filter=hot&amp;sum_comment_number=13481&amp;filter_tips_before=1&amp;from=singleWeiBo&amp;__rnd=1580364082863”</a></strong><br>==其中，有效json包链接为：==<strong>“<a href="https://weibo.com/aj/v6/comment/big?ajwvr=6&amp;id=4466098865136889&amp;page=1&amp;from=singleWeiBo”" target="_blank" rel="noopener">https://weibo.com/aj/v6/comment/big?ajwvr=6&amp;id=4466098865136889&amp;page=1&amp;from=singleWeiBo”</a></strong>。获取json包之后，既可以提取出评论数据，其代码如下 <span id='jumpid'>==(由于该json包不需要其他参数，需要额外提供mid和sum_comment_number参数即可，因此我们在获取mid后可以直接跳到这一步)== ：</span>，经过测试，若不提供sum_comment_number参数只能提取前几页的微博评论。<br>爬取评论如下：</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/20200130155822422.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70" alt="评论结果" title="">
+                </div>
+                <div class="image-caption">评论结果</div>
+            </figure>
+<h1 id="GetWeiBoRemark-py"><a href="#GetWeiBoRemark-py" class="headerlink" title=" GetWeiBoRemark.py "></a><span id="jump2"> GetWeiBoRemark.py </span></h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> parse</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line"></span><br><span class="line"><span class="comment"># 预设</span></span><br><span class="line">requests.packages.urllib3.disable_warnings()</span><br><span class="line">session = requests.session()</span><br><span class="line">session.verify = <span class="literal">False</span></span><br><span class="line">session.timeout = <span class="number">20</span></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">"User-Agent"</span>: <span class="string">"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3970.5 Safari/537.36"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getweiboremark</span><span class="params">(name, index=<span class="number">1</span>, num=<span class="number">-1</span>)</span>:</span></span><br><span class="line">    <span class="comment"># name参数代表微博主页的名称</span></span><br><span class="line">    <span class="comment"># index参数代表目标微博的序号</span></span><br><span class="line">    <span class="comment"># num代表要爬的评论数，-1代表所有评论</span></span><br><span class="line">    <span class="comment"># 返回结果为评论列表</span></span><br><span class="line">    home_url = <span class="string">'https://weibo.com/'</span> + name</span><br><span class="line">    tid = get_tid()</span><br><span class="line">    get_cookie(tid=tid)</span><br><span class="line">    mids = get_mids(home_url=home_url)</span><br><span class="line">    remark_data = get_remarkdata(num=num, mids=mids, index=index)</span><br><span class="line">    <span class="keyword">return</span> remark_data</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_tid</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment"># 获取tid</span></span><br><span class="line">    url1 = <span class="string">"https://passport.weibo.com/visitor/genvisitor"</span></span><br><span class="line">    data = <span class="string">"cb=gen_callback&amp;fp=%7B%22os%22%3A%221%22%2C%22browser%22%3A%22Chrome80%2C0%2C3970%2C5%22%2C%22fonts%22%3A%22undefined%22%2C%22screenInfo%22%3A%221920*1080*24%22%2C%22plugins%22%3A%22Portable%20Document%20Format%3A%3Ainternal-pdf-viewer%3A%3AChrome%20PDF%20Plugin%7C%3A%3Amhjfbmdgcfjbbpaeojofohoefgiehjai%3A%3AChrome%20PDF%20Viewer%7C%3A%3Ainternal-nacl-plugin%3A%3ANative%20Client%22%7D"</span></span><br><span class="line"></span><br><span class="line">    headers.update(&#123;<span class="string">'Content-Type'</span>: <span class="string">'application/x-www-form-urlencoded'</span>&#125;)</span><br><span class="line">    res=session.post(url=url1, headers=headers, data=data).content.decode(<span class="string">'utf-8'</span>)[<span class="number">36</span>:<span class="number">-2</span>]</span><br><span class="line">    tid = json.loads(res)[<span class="string">'data'</span>][<span class="string">'tid'</span>]</span><br><span class="line">    <span class="keyword">del</span> headers[<span class="string">'Content-Type'</span>]</span><br><span class="line">    <span class="keyword">return</span> tid</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_cookie</span><span class="params">(tid, session=session)</span>:</span></span><br><span class="line">    <span class="comment"># 获取访客cookie</span></span><br><span class="line">    url2 = <span class="string">"https://passport.weibo.com/visitor/visitor?a=incarnate&amp;t="</span> + parse.quote(</span><br><span class="line">        tid) + <span class="string">"&amp;w=2&amp;c=095&amp;gc=&amp;cb=cross_domain&amp;from=weibo"</span></span><br><span class="line">    session.get(url=url2.encode(<span class="string">'utf-8'</span>), headers=headers)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_mids</span><span class="params">(home_url, session=session,try_num=<span class="number">0</span>)</span>:</span></span><br><span class="line">    <span class="comment"># 访问微博主页，解析获取评论页面</span></span><br><span class="line">    <span class="comment"># 要想获取mids，必须先获取cookie</span></span><br><span class="line">    res = session.get(url=home_url, headers=headers).content.decode(<span class="string">'utf-8'</span>, <span class="string">"ignore"</span>)</span><br><span class="line">    html = etree.HTML(res)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="comment"># 含有mid的html代码被隐藏在这一个json中</span></span><br><span class="line">        <span class="comment"># 38是企业微博</span></span><br><span class="line">        mid_json = json.loads(html.xpath(<span class="string">"//script"</span>)[<span class="number">38</span>].text[<span class="number">8</span>:<span class="number">-1</span>])</span><br><span class="line">        mid_html = etree.HTML(mid_json[<span class="string">'html'</span>])</span><br><span class="line">        mids = mid_html.xpath(<span class="string">"//@mid"</span>)</span><br><span class="line">        mids[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        print(e)</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 32是个人微博</span></span><br><span class="line">            mid_json = json.loads(html.xpath(<span class="string">"//script"</span>)[<span class="number">32</span>].text[<span class="number">8</span>:<span class="number">-1</span>])</span><br><span class="line">            mid_html = etree.HTML(mid_json[<span class="string">'html'</span>])</span><br><span class="line">            mids = mid_html.xpath(<span class="string">"//@mid"</span>)</span><br><span class="line">            mids[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            print(e)</span><br><span class="line">            <span class="keyword">if</span> try_num&lt;<span class="number">2</span>:</span><br><span class="line">                mids=get_mids(home_url, session=session, try_num=try_num+<span class="number">1</span>)</span><br><span class="line">            <span class="keyword">if</span> len(mids)==<span class="number">0</span>:</span><br><span class="line">                print(<span class="string">"多次获取mid失败！程序暂停运行！"</span>)</span><br><span class="line">                quit()</span><br><span class="line">    <span class="keyword">return</span> mids</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_remarkdata</span><span class="params">(num, mids, index=<span class="number">1</span>)</span>:</span></span><br><span class="line">    <span class="comment"># 获取评论数据</span></span><br><span class="line">    url_remarkdata = <span class="string">'https://weibo.com/aj/v6/comment/big?ajwvr=6&amp;id=&#123;mid&#125;&amp;page=&#123;page&#125;&amp;sum_comment_number=&#123;comment_number&#125;&amp;from=singleWeiBo'</span></span><br><span class="line">    page = <span class="number">1</span></span><br><span class="line">    remark_data_new = []</span><br><span class="line">    current_num = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        print(<span class="string">"-"</span> * <span class="number">50</span>)</span><br><span class="line">        url_remarkdata_new = url_remarkdata.format(mid=str(mids[index]),comment_number=str(current_num),page=str(page))</span><br><span class="line">        page = page + <span class="number">1</span></span><br><span class="line">        print(<span class="string">"正在采集第 "</span> + str(page - <span class="number">1</span>) + <span class="string">" 页评论！"</span>)</span><br><span class="line">        res = session.get(url=url_remarkdata_new, headers=headers)</span><br><span class="line">        remark_html = etree.HTML(json.loads(res.content.decode(encoding=<span class="string">'utf-8'</span>))[<span class="string">'data'</span>][<span class="string">'html'</span>])</span><br><span class="line">        remark_data = remark_html.xpath(<span class="string">"//div[@class='list_con']/div[1]/text()"</span>)</span><br><span class="line">        remark_num = json.loads(res.content.decode(encoding=<span class="string">'utf-8'</span>))[<span class="string">'data'</span>][<span class="string">'count'</span>]</span><br><span class="line">        <span class="keyword">if</span> page == <span class="number">2</span>:</span><br><span class="line">            print(<span class="string">"本条微博共有 "</span>+str(remark_num)+<span class="string">' 个评论！'</span>)</span><br><span class="line">            <span class="keyword">if</span> num == <span class="number">-1</span>:</span><br><span class="line">                num = remark_num</span><br><span class="line">            <span class="keyword">elif</span> num &gt; remark_num:</span><br><span class="line">                num = remark_num</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> remark_data:</span><br><span class="line">            <span class="keyword">if</span> i[<span class="number">0</span>:<span class="number">1</span>] == <span class="string">'：'</span>:</span><br><span class="line">                i = i[<span class="number">1</span>:]</span><br><span class="line">                remark_data_new.append(i.strip())</span><br><span class="line">        current_num = len(remark_data_new)</span><br><span class="line">        print(<span class="string">"当前已采集："</span> + str(current_num) + <span class="string">" 个评论，剩余："</span> + str(num - current_num) + <span class="string">"个待采集！"</span>)</span><br><span class="line">        <span class="keyword">if</span> (num &lt;= current_num):</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">return</span> remark_data_new</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">save_remarkdata</span><span class="params">(name,data)</span>:</span></span><br><span class="line">    <span class="keyword">with</span> open(name,<span class="string">'w'</span>,encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> fp:</span><br><span class="line">        fp.write(data)</span><br><span class="line">        fp.flush()</span><br><span class="line">        fp.close()</span><br></pre></td></tr></table></figure>
+<p><strong>结果展示：</strong></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/2020013016343122.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70" alt="结果展示1" title="">
+                </div>
+                <div class="image-caption">结果展示1</div>
+            </figure>
+
+
+<h1 id="3、生成词云"><a href="#3、生成词云" class="headerlink" title="3、生成词云"></a>3、生成词云</h1><p>代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> wordcloud <span class="keyword">import</span> WordCloud</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"><span class="keyword">import</span> GetWeiBoRemark</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">producewordcloud</span><span class="params">(data,mask=None)</span>:</span></span><br><span class="line">	word_cloud=WordCloud(background_color=<span class="string">"white"</span>,font_path=<span class="string">'msyh.ttc'</span>,mask=mask,max_words=<span class="number">200</span>,max_font_size=<span class="number">100</span>,width=<span class="number">1000</span>,height=<span class="number">860</span>).generate(<span class="string">' '</span>.join(jieba.cut(data,cut_all=<span class="literal">False</span>)))</span><br><span class="line">    plt.figure()</span><br><span class="line">    plt.imshow(word_cloud, interpolation=<span class="string">'bilinear'</span>)</span><br><span class="line">    plt.axis(<span class="string">"off"</span>)  <span class="comment"># 不显示坐标轴</span></span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># cctvxinwen</span></span><br><span class="line">    remark_data=GetWeiBoRemark.getweiboremark(name=<span class="string">"cctvxinwen"</span>,index=<span class="number">2</span>,num=<span class="number">100</span>)</span><br><span class="line">    str_remark_data=<span class="string">''</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> remark_data:</span><br><span class="line">        str_remark_data=str_remark_data+str(i)</span><br><span class="line">    GetWeiBoRemark.save_remarkdata(name=<span class="string">'cctvxinwen.txt'</span>,data=str_remark_data)</span><br><span class="line">    producewordcloud(str_remark_data)</span><br></pre></td></tr></table></figure>
+<p>==目标微博==</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/20200130195958811.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="目标微博" title="">
+                </div>
+                <div class="image-caption">目标微博</div>
+            </figure>
+<p>==下面是爬3000条数据做出的词云：==</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/20200130200325296.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="词云" title="">
+                </div>
+                <div class="image-caption">词云</div>
+            </figure>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/20200130200913232.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="爬数据" title="">
+                </div>
+                <div class="image-caption">爬数据</div>
+            </figure>
+<h3 id="微信公众号："><a href="#微信公众号：" class="headerlink" title="==微信公众号：=="></a>==<strong>微信公众号：</strong>==</h3><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/20200121125047312.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="小术快跑" title="">
+                </div>
+                <div class="image-caption">小术快跑</div>
+            </figure>
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2020-02-06T13:04:00.710Z" itemprop="dateUpdated">2020-02-06 21:04:00</time>
+</span><br>
+
+
+        
+        <a href="https://blog.csdn.net/qq_40528553" target="_blank" rel="noopener">小术快跑呀，用于分享小术的程序人生；目前主要包括：Python爬虫学习，计算机视觉学习，人工智能学习，Matlab算法学习，安卓逆向学习，黑客技术学习等，致力于为计算机爱好者提供相互交流相互学习的共享平台。关注微信公众号 “小术快跑呀” 领取超多视频教程~</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://www.asyu17.cn">
+            <img src="/img/avatar.jpg" alt="ASYU17">
+            ASYU17
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/bilibili/" rel="tag">bilibili</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://www.asyu17.cn/2020/01/30/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%945%E3%80%81%E3%80%90%E8%B6%85%E8%AF%A6%E7%BB%86%E8%AE%B0%E5%BD%95%E3%80%91%E4%BB%8E%E7%88%AC%E5%8F%96%E5%BE%AE%E5%8D%9A%E8%AF%84%E8%AE%BA%E6%95%B0%E6%8D%AE%EF%BC%88%E5%85%8D%E7%99%BB%E9%99%86%EF%BC%89%E5%88%B0%E7%94%9F%E6%88%90%E8%AF%8D%E4%BA%91.html&title=《【Python爬虫实例学习篇】——5、【超详细记录】从爬取微博评论数据（免登陆）到生成词云》 — 小术快跑呀&pic=https://www.asyu17.cn/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://www.asyu17.cn/2020/01/30/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%945%E3%80%81%E3%80%90%E8%B6%85%E8%AF%A6%E7%BB%86%E8%AE%B0%E5%BD%95%E3%80%91%E4%BB%8E%E7%88%AC%E5%8F%96%E5%BE%AE%E5%8D%9A%E8%AF%84%E8%AE%BA%E6%95%B0%E6%8D%AE%EF%BC%88%E5%85%8D%E7%99%BB%E9%99%86%EF%BC%89%E5%88%B0%E7%94%9F%E6%88%90%E8%AF%8D%E4%BA%91.html&title=《【Python爬虫实例学习篇】——5、【超详细记录】从爬取微博评论数据（免登陆）到生成词云》 — 小术快跑呀&source=小术快跑呀，用于分享小术的程序人生；目前主要包括：Python爬虫学习，计算机视觉学习，人工智能学习，Matlab算法学习，安卓逆向学习，黑客技术学习等，..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://www.asyu17.cn/2020/01/30/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%945%E3%80%81%E3%80%90%E8%B6%85%E8%AF%A6%E7%BB%86%E8%AE%B0%E5%BD%95%E3%80%91%E4%BB%8E%E7%88%AC%E5%8F%96%E5%BE%AE%E5%8D%9A%E8%AF%84%E8%AE%BA%E6%95%B0%E6%8D%AE%EF%BC%88%E5%85%8D%E7%99%BB%E9%99%86%EF%BC%89%E5%88%B0%E7%94%9F%E6%88%90%E8%AF%8D%E4%BA%91.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《【Python爬虫实例学习篇】——5、【超详细记录】从爬取微博评论数据（免登陆）到生成词云》 — 小术快跑呀&url=https://www.asyu17.cn/2020/01/30/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%945%E3%80%81%E3%80%90%E8%B6%85%E8%AF%A6%E7%BB%86%E8%AE%B0%E5%BD%95%E3%80%91%E4%BB%8E%E7%88%AC%E5%8F%96%E5%BE%AE%E5%8D%9A%E8%AF%84%E8%AE%BA%E6%95%B0%E6%8D%AE%EF%BC%88%E5%85%8D%E7%99%BB%E9%99%86%EF%BC%89%E5%88%B0%E7%94%9F%E6%88%90%E8%AF%8D%E4%BA%91.html&via=https://www.asyu17.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://www.asyu17.cn/2020/01/30/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%945%E3%80%81%E3%80%90%E8%B6%85%E8%AF%A6%E7%BB%86%E8%AE%B0%E5%BD%95%E3%80%91%E4%BB%8E%E7%88%AC%E5%8F%96%E5%BE%AE%E5%8D%9A%E8%AF%84%E8%AE%BA%E6%95%B0%E6%8D%AE%EF%BC%88%E5%85%8D%E7%99%BB%E9%99%86%EF%BC%89%E5%88%B0%E7%94%9F%E6%88%90%E8%AF%8D%E4%BA%91.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2020/02/02/%E3%80%90%E8%87%AA%E5%88%B6%E5%AE%9E%E7%94%A8%E5%B0%8F%E5%B7%A5%E5%85%B7%E3%80%91%E2%80%94%E2%80%941%E3%80%81%E8%87%AA%E5%88%B6Xpath%E8%A7%A3%E6%9E%90%E5%99%A8.html" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">【自制实用小工具】——1、自制Xpath解析器</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2020/01/21/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%944%E3%80%81%E8%B6%85%E8%AF%A6%E7%BB%86%E7%88%AC%E5%8F%96bilibili%E8%A7%86%E9%A2%91.html" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">【Python爬虫实例学习篇】——4、超详细爬取bilibili视频</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'asyu17',
+            repo: 'asyu17.github.io',
+            oauth: {
+                client_id: '389ed52b820dcc33c6d8',
+                client_secret: '3e514a4c0b03c8da5d84cdd4375305ce4b6df0d6',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>ASYU17 &copy; 2015 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://www.asyu17.cn/2020/01/30/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%945%E3%80%81%E3%80%90%E8%B6%85%E8%AF%A6%E7%BB%86%E8%AE%B0%E5%BD%95%E3%80%91%E4%BB%8E%E7%88%AC%E5%8F%96%E5%BE%AE%E5%8D%9A%E8%AF%84%E8%AE%BA%E6%95%B0%E6%8D%AE%EF%BC%88%E5%85%8D%E7%99%BB%E9%99%86%EF%BC%89%E5%88%B0%E7%94%9F%E6%88%90%E8%AF%8D%E4%BA%91.html&title=《【Python爬虫实例学习篇】——5、【超详细记录】从爬取微博评论数据（免登陆）到生成词云》 — 小术快跑呀&pic=https://www.asyu17.cn/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://www.asyu17.cn/2020/01/30/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%945%E3%80%81%E3%80%90%E8%B6%85%E8%AF%A6%E7%BB%86%E8%AE%B0%E5%BD%95%E3%80%91%E4%BB%8E%E7%88%AC%E5%8F%96%E5%BE%AE%E5%8D%9A%E8%AF%84%E8%AE%BA%E6%95%B0%E6%8D%AE%EF%BC%88%E5%85%8D%E7%99%BB%E9%99%86%EF%BC%89%E5%88%B0%E7%94%9F%E6%88%90%E8%AF%8D%E4%BA%91.html&title=《【Python爬虫实例学习篇】——5、【超详细记录】从爬取微博评论数据（免登陆）到生成词云》 — 小术快跑呀&source=小术快跑呀，用于分享小术的程序人生；目前主要包括：Python爬虫学习，计算机视觉学习，人工智能学习，Matlab算法学习，安卓逆向学习，黑客技术学习等，..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://www.asyu17.cn/2020/01/30/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%945%E3%80%81%E3%80%90%E8%B6%85%E8%AF%A6%E7%BB%86%E8%AE%B0%E5%BD%95%E3%80%91%E4%BB%8E%E7%88%AC%E5%8F%96%E5%BE%AE%E5%8D%9A%E8%AF%84%E8%AE%BA%E6%95%B0%E6%8D%AE%EF%BC%88%E5%85%8D%E7%99%BB%E9%99%86%EF%BC%89%E5%88%B0%E7%94%9F%E6%88%90%E8%AF%8D%E4%BA%91.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《【Python爬虫实例学习篇】——5、【超详细记录】从爬取微博评论数据（免登陆）到生成词云》 — 小术快跑呀&url=https://www.asyu17.cn/2020/01/30/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%945%E3%80%81%E3%80%90%E8%B6%85%E8%AF%A6%E7%BB%86%E8%AE%B0%E5%BD%95%E3%80%91%E4%BB%8E%E7%88%AC%E5%8F%96%E5%BE%AE%E5%8D%9A%E8%AF%84%E8%AE%BA%E6%95%B0%E6%8D%AE%EF%BC%88%E5%85%8D%E7%99%BB%E9%99%86%EF%BC%89%E5%88%B0%E7%94%9F%E6%88%90%E8%AF%8D%E4%BA%91.html&via=https://www.asyu17.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://www.asyu17.cn/2020/01/30/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%945%E3%80%81%E3%80%90%E8%B6%85%E8%AF%A6%E7%BB%86%E8%AE%B0%E5%BD%95%E3%80%91%E4%BB%8E%E7%88%AC%E5%8F%96%E5%BE%AE%E5%8D%9A%E8%AF%84%E8%AE%BA%E6%95%B0%E6%8D%AE%EF%BC%88%E5%85%8D%E7%99%BB%E9%99%86%EF%BC%89%E5%88%B0%E7%94%9F%E6%88%90%E8%AF%8D%E4%BA%91.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,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" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+lazyScripts.push('//s95.cnzz.com/z_stat.php?id=1278601976&web_id=1278601976')
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

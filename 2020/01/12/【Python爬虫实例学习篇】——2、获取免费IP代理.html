@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <link rel="canonical" href="www.asyu17.cn/2020/01/12/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%942%E3%80%81%E8%8E%B7%E5%8F%96%E5%85%8D%E8%B4%B9IP%E4%BB%A3%E7%90%86.html">
+    
+    
+    <title>【Python爬虫实例学习篇】——2、获取免费IP代理 | 小术快跑呀 | asyu17</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python,爬虫,proxy,代理">
+    <meta name="description" content="【Python爬虫实例学习篇】——2、获取免费IP代理由于在使用爬虫时经常会检查IP地址，因此有必要找到一个获取IP代理的地方。经过苦苦寻找，终于找到了一个质量还算过得去同时提供API接口的免费代理网站，下面是API的封装过程。 使用工具1.Python 3.62.requests库3.免费代理网站 获取一个免费代理该免费代理网站提供了两个，一个是提供一个免费代理，另一个是提供一页免费代理（一页最">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Python爬虫实例学习篇】——2、获取免费IP代理">
+<meta property="og:url" content="https://www.asyu17.cn/2020/01/12/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%942%E3%80%81%E8%8E%B7%E5%8F%96%E5%85%8D%E8%B4%B9IP%E4%BB%A3%E7%90%86.html">
+<meta property="og:site_name" content="小术快跑呀">
+<meta property="og:description" content="【Python爬虫实例学习篇】——2、获取免费IP代理由于在使用爬虫时经常会检查IP地址，因此有必要找到一个获取IP代理的地方。经过苦苦寻找，终于找到了一个质量还算过得去同时提供API接口的免费代理网站，下面是API的封装过程。 使用工具1.Python 3.62.requests库3.免费代理网站 获取一个免费代理该免费代理网站提供了两个，一个是提供一个免费代理，另一个是提供一页免费代理（一页最">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200112203832615.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200112203900689.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200121125047312.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="article:published_time" content="2020-01-12T12:21:01.000Z">
+<meta property="article:modified_time" content="2020-02-06T13:03:41.882Z">
+<meta property="article:author" content="ASYU17">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="proxy">
+<meta property="article:tag" content="代理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200112203832615.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="小术快跑呀" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">ASYU17</h5>
+          <a href="mailto:asyu12@163.com" title="asyu12@163.com" class="mail">asyu12@163.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/asyu17" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://blog.csdn.net/qq_40528553" target="_blank" >
+                <i class="icon icon-lg icon-copyright"></i>
+                Csdn
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/custom"  >
+                <i class="icon icon-lg icon-link"></i>
+                关于
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">【Python爬虫实例学习篇】——2、获取免费IP代理</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">【Python爬虫实例学习篇】——2、获取免费IP代理</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2020-01-12T12:21:01.000Z" itemprop="datePublished" class="page-time">
+  2020-01-12
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91/">【Python爬虫实例学习篇】</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#【Python爬虫实例学习篇】——2、获取免费IP代理"><span class="post-toc-number">1.</span> <span class="post-toc-text">【Python爬虫实例学习篇】——2、获取免费IP代理</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#使用工具"><span class="post-toc-number">2.</span> <span class="post-toc-text">使用工具</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#获取一个免费代理"><span class="post-toc-number">3.</span> <span class="post-toc-text">获取一个免费代理</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#获取一页免费代理"><span class="post-toc-number">4.</span> <span class="post-toc-text">获取一页免费代理</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#结果展示"><span class="post-toc-number">5.</span> <span class="post-toc-text">结果展示</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#微信公众号："><span class="post-toc-number">6.</span> <span class="post-toc-text">&#x3D;&#x3D;微信公众号：&#x3D;&#x3D;</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-【Python爬虫实例学习篇】——2、获取免费IP代理"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">【Python爬虫实例学习篇】——2、获取免费IP代理</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2020-01-12 20:21:01" datetime="2020-01-12T12:21:01.000Z"  itemprop="datePublished">2020-01-12</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91/">【Python爬虫实例学习篇】</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="【Python爬虫实例学习篇】——2、获取免费IP代理"><a href="#【Python爬虫实例学习篇】——2、获取免费IP代理" class="headerlink" title="【Python爬虫实例学习篇】——2、获取免费IP代理"></a>【Python爬虫实例学习篇】——2、获取免费IP代理</h1><p>由于在使用爬虫时经常会检查IP地址，因此有必要找到一个获取IP代理的地方。经过苦苦寻找，终于找到了一个质量还算过得去同时提供API接口的免费代理网站，下面是API的封装过程。</p>
+<h1 id="使用工具"><a href="#使用工具" class="headerlink" title="使用工具"></a>使用工具</h1><p>1.Python 3.6<br>2.requests库<br>3.<a href="https://www.freeip.top/" target="_blank" rel="noopener">免费代理网站</a></p>
+<h1 id="获取一个免费代理"><a href="#获取一个免费代理" class="headerlink" title="获取一个免费代理"></a>获取一个免费代理</h1><p>该免费代理网站提供了两个，一个是提供一个免费代理，另一个是提供一页免费代理（一页最多15个）。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">GetFreeProxy</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment"># 获取一个免费代理</span></span><br><span class="line">    url=<span class="string">'https://www.freeip.top/api/proxy_ip'</span></span><br><span class="line">    ip=list(range(<span class="number">1</span>))</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        res=requests.get(url=url,timeout=<span class="number">20</span>)</span><br><span class="line">        <span class="comment"># 将返回数据进行json解析</span></span><br><span class="line">        result = res.json()</span><br><span class="line">        ip[<span class="number">0</span>]=result[<span class="string">'data'</span>][<span class="string">'ip'</span>]+<span class="string">':'</span>+result[<span class="string">'data'</span>][<span class="string">'port'</span>]</span><br><span class="line">        <span class="keyword">return</span> ip</span><br><span class="line">    <span class="keyword">except</span> Exception:</span><br><span class="line">        print(<span class="string">'获取代理ip失败！正在重试···'</span>)</span><br><span class="line">        <span class="comment"># 异常重调</span></span><br><span class="line">        GetFreeProxy()</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<h1 id="获取一页免费代理"><a href="#获取一页免费代理" class="headerlink" title="获取一页免费代理"></a>获取一页免费代理</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">GetFreeProxyList</span><span class="params">(page=<span class="number">1</span>,country=<span class="string">'all'</span>,isp=<span class="string">'None'</span>,rder_by=<span class="string">'validated_at'</span>,order_rule=<span class="string">'DESC'</span>)</span>:</span></span><br><span class="line"><span class="comment"># 获取一个免费代理列表</span></span><br><span class="line"><span class="comment">#(以下参数是开发文档上提供的，但并未提供提交方法，就先放这里了)</span></span><br><span class="line"><span class="comment"># 参数名	        数据类型 必传	说明	    例子</span></span><br><span class="line"><span class="comment"># page	        int	    N	第几页	1</span></span><br><span class="line"><span class="comment"># country	    string	N	所属国	中国,美国</span></span><br><span class="line"><span class="comment"># isp	        string	N	ISP	    电信,阿里云</span></span><br><span class="line"><span class="comment"># order_by	    string	N	排序字段	speed:响应速度,validated_at:最新校验时间 created_at:存活时间</span></span><br><span class="line"><span class="comment"># order_rule	string	N	排序方向	DESC:降序 ASC:升序</span></span><br><span class="line">    url=<span class="string">'https://www.freeip.top/api/proxy_ips'</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        res = requests.get(url=url,timeout=<span class="number">20</span>)</span><br><span class="line">        result = res.json()</span><br><span class="line">        <span class="comment"># 将返回数据进行json解析</span></span><br><span class="line">        ip=list(range(int(result[<span class="string">'data'</span>][<span class="string">'to'</span>])))</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(int(result[<span class="string">'data'</span>][<span class="string">'to'</span>])):</span><br><span class="line">            ip[i]=result[<span class="string">'data'</span>][<span class="string">'data'</span>][i][<span class="string">'ip'</span>] + <span class="string">':'</span> + result[<span class="string">'data'</span>][<span class="string">'data'</span>][i][<span class="string">'port'</span>]</span><br><span class="line">        <span class="keyword">return</span> ip</span><br><span class="line">    <span class="keyword">except</span> Exception:</span><br><span class="line">        print(<span class="string">'获取代理ip列表失败！正在重试···'</span>)</span><br><span class="line">        GetFreeProxyList()</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<h1 id="结果展示"><a href="#结果展示" class="headerlink" title="结果展示"></a>结果展示</h1><p><strong>获取一个免费代理</strong>：</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/20200112203832615.png" alt="获取一个免费代理" title="">
+                </div>
+                <div class="image-caption">获取一个免费代理</div>
+            </figure>
+<p><strong>获取一页免费代理</strong>：</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/20200112203900689.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70" alt="获取一页免费代理" title="">
+                </div>
+                <div class="image-caption">获取一页免费代理</div>
+            </figure>
+<h1 id="微信公众号："><a href="#微信公众号：" class="headerlink" title="==微信公众号：=="></a>==<strong>微信公众号：</strong>==</h1><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/20200121125047312.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="小术快跑" title="">
+                </div>
+                <div class="image-caption">小术快跑</div>
+            </figure>
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2020-02-06T13:03:41.882Z" itemprop="dateUpdated">2020-02-06 21:03:41</time>
+</span><br>
+
+
+        
+        <a href="https://blog.csdn.net/qq_40528553" target="_blank" rel="noopener">小术快跑呀，用于分享小术的程序人生；目前主要包括：Python爬虫学习，计算机视觉学习，人工智能学习，Matlab算法学习，安卓逆向学习，黑客技术学习等，致力于为计算机爱好者提供相互交流相互学习的共享平台。关注微信公众号 “小术快跑呀” 领取超多视频教程~</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://www.asyu17.cn">
+            <img src="/img/avatar.jpg" alt="ASYU17">
+            ASYU17
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/proxy/" rel="tag">proxy</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%90%86/" rel="tag">代理</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://www.asyu17.cn/2020/01/12/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%942%E3%80%81%E8%8E%B7%E5%8F%96%E5%85%8D%E8%B4%B9IP%E4%BB%A3%E7%90%86.html&title=《【Python爬虫实例学习篇】——2、获取免费IP代理》 — 小术快跑呀&pic=https://www.asyu17.cn/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://www.asyu17.cn/2020/01/12/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%942%E3%80%81%E8%8E%B7%E5%8F%96%E5%85%8D%E8%B4%B9IP%E4%BB%A3%E7%90%86.html&title=《【Python爬虫实例学习篇】——2、获取免费IP代理》 — 小术快跑呀&source=小术快跑呀，用于分享小术的程序人生；目前主要包括：Python爬虫学习，计算机视觉学习，人工智能学习，Matlab算法学习，安卓逆向学习，黑客技术学习等，..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://www.asyu17.cn/2020/01/12/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%942%E3%80%81%E8%8E%B7%E5%8F%96%E5%85%8D%E8%B4%B9IP%E4%BB%A3%E7%90%86.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《【Python爬虫实例学习篇】——2、获取免费IP代理》 — 小术快跑呀&url=https://www.asyu17.cn/2020/01/12/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%942%E3%80%81%E8%8E%B7%E5%8F%96%E5%85%8D%E8%B4%B9IP%E4%BB%A3%E7%90%86.html&via=https://www.asyu17.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://www.asyu17.cn/2020/01/12/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%942%E3%80%81%E8%8E%B7%E5%8F%96%E5%85%8D%E8%B4%B9IP%E4%BB%A3%E7%90%86.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2020/01/20/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%943%E3%80%81%E8%AE%BF%E9%97%AECSDN%E5%B9%B6%E7%BC%96%E8%AF%91%E6%88%90exe%E6%96%87%E4%BB%B6.html" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">【Python爬虫实例学习篇】——3、访问CSDN并编译成exe文件</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2020/01/10/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%941%E3%80%81%E8%8E%B7%E5%8F%96%E6%8B%89%E5%8B%BE%E7%BD%91%E8%81%8C%E4%BD%8D%E4%BF%A1%E6%81%AF.html" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">【Python爬虫实例学习篇】——1、获取拉勾网职位信息</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'asyu17',
+            repo: 'asyu17.github.io',
+            oauth: {
+                client_id: '389ed52b820dcc33c6d8',
+                client_secret: '3e514a4c0b03c8da5d84cdd4375305ce4b6df0d6',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>ASYU17 &copy; 2015 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://www.asyu17.cn/2020/01/12/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%942%E3%80%81%E8%8E%B7%E5%8F%96%E5%85%8D%E8%B4%B9IP%E4%BB%A3%E7%90%86.html&title=《【Python爬虫实例学习篇】——2、获取免费IP代理》 — 小术快跑呀&pic=https://www.asyu17.cn/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://www.asyu17.cn/2020/01/12/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%942%E3%80%81%E8%8E%B7%E5%8F%96%E5%85%8D%E8%B4%B9IP%E4%BB%A3%E7%90%86.html&title=《【Python爬虫实例学习篇】——2、获取免费IP代理》 — 小术快跑呀&source=小术快跑呀，用于分享小术的程序人生；目前主要包括：Python爬虫学习，计算机视觉学习，人工智能学习，Matlab算法学习，安卓逆向学习，黑客技术学习等，..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://www.asyu17.cn/2020/01/12/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%942%E3%80%81%E8%8E%B7%E5%8F%96%E5%85%8D%E8%B4%B9IP%E4%BB%A3%E7%90%86.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《【Python爬虫实例学习篇】——2、获取免费IP代理》 — 小术快跑呀&url=https://www.asyu17.cn/2020/01/12/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%942%E3%80%81%E8%8E%B7%E5%8F%96%E5%85%8D%E8%B4%B9IP%E4%BB%A3%E7%90%86.html&via=https://www.asyu17.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://www.asyu17.cn/2020/01/12/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%942%E3%80%81%E8%8E%B7%E5%8F%96%E5%85%8D%E8%B4%B9IP%E4%BB%A3%E7%90%86.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,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" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+lazyScripts.push('//s95.cnzz.com/z_stat.php?id=1278601976&web_id=1278601976')
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

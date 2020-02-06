@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <link rel="canonical" href="www.asyu17.cn/2020/01/21/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%944%E3%80%81%E8%B6%85%E8%AF%A6%E7%BB%86%E7%88%AC%E5%8F%96bilibili%E8%A7%86%E9%A2%91.html">
+    
+    
+    <title>【Python爬虫实例学习篇】——4、超详细爬取bilibili视频 | 小术快跑呀 | asyu17</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python,爬虫,bilibili">
+    <meta name="description" content="【Python爬虫实例学习篇】——4、超详细爬取bilibili视频由于经常在B站上学习，但无奈于家里网络太差，在线观看卡顿严重，于是萌生了下载视频的想法（如果只是单纯想下载视频，请用you-get库）。废话不多说直接开干。（我发现好像很多人在爬bilibili视频的时候都有用到某个API然后还需要一个cid参数，这些在本文中没有用到。。。。）（另外再说明一下，第3篇文章没有通过审核，要看的话去公">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Python爬虫实例学习篇】——4、超详细爬取bilibili视频">
+<meta property="og:url" content="https://www.asyu17.cn/2020/01/21/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%944%E3%80%81%E8%B6%85%E8%AF%A6%E7%BB%86%E7%88%AC%E5%8F%96bilibili%E8%A7%86%E9%A2%91.html">
+<meta property="og:site_name" content="小术快跑呀">
+<meta property="og:description" content="【Python爬虫实例学习篇】——4、超详细爬取bilibili视频由于经常在B站上学习，但无奈于家里网络太差，在线观看卡顿严重，于是萌生了下载视频的想法（如果只是单纯想下载视频，请用you-get库）。废话不多说直接开干。（我发现好像很多人在爬bilibili视频的时候都有用到某个API然后还需要一个cid参数，这些在本文中没有用到。。。。）（另外再说明一下，第3篇文章没有通过审核，要看的话去公">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020011920572175.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200119213321709.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200119214014952.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200120155201233.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020012015584734.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200120162948823.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200120164618877.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200120172705366.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200120204829101.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200120205026191.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020012119084041.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200121125047312.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="article:published_time" content="2020-01-21T10:54:01.000Z">
+<meta property="article:modified_time" content="2020-02-06T13:03:54.080Z">
+<meta property="article:author" content="ASYU17">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="bilibili">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/2020011920572175.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center">
+    
+        <link rel="alternate" type="application/atom+xml" title="小术快跑呀" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">ASYU17</h5>
+          <a href="mailto:asyu12@163.com" title="asyu12@163.com" class="mail">asyu12@163.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/asyu17" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://blog.csdn.net/qq_40528553" target="_blank" >
+                <i class="icon icon-lg icon-copyright"></i>
+                Csdn
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/custom"  >
+                <i class="icon icon-lg icon-link"></i>
+                关于
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">【Python爬虫实例学习篇】——4、超详细爬取bilibili视频</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">【Python爬虫实例学习篇】——4、超详细爬取bilibili视频</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2020-01-21T10:54:01.000Z" itemprop="datePublished" class="page-time">
+  2020-01-21
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91/">【Python爬虫实例学习篇】</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#【Python爬虫实例学习篇】——4、超详细爬取bilibili视频"><span class="post-toc-number">1.</span> <span class="post-toc-text">【Python爬虫实例学习篇】——4、超详细爬取bilibili视频</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#确定视频资源地址"><span class="post-toc-number">2.</span> <span class="post-toc-text"> 确定视频资源地址 </span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#下载测试"><span class="post-toc-number">3.</span> <span class="post-toc-text"> 下载测试</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3、下载视频和音频（两种方法）"><span class="post-toc-number">3.0.1.</span> <span class="post-toc-text"> 3、下载视频和音频（两种方法）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4、合并视频和音频"><span class="post-toc-number">3.0.2.</span> <span class="post-toc-text"> 4、合并视频和音频</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#BiliBiliVideo-py"><span class="post-toc-number">4.</span> <span class="post-toc-text"> BiliBiliVideo.py</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#运行结果截图："><span class="post-toc-number">5.</span> <span class="post-toc-text"> 运行结果截图：</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#微信公众号："><span class="post-toc-number">5.0.1.</span> <span class="post-toc-text">&#x3D;&#x3D;微信公众号：&#x3D;&#x3D;</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-【Python爬虫实例学习篇】——4、超详细爬取bilibili视频"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">【Python爬虫实例学习篇】——4、超详细爬取bilibili视频</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2020-01-21 18:54:01" datetime="2020-01-21T10:54:01.000Z"  itemprop="datePublished">2020-01-21</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91/">【Python爬虫实例学习篇】</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="【Python爬虫实例学习篇】——4、超详细爬取bilibili视频"><a href="#【Python爬虫实例学习篇】——4、超详细爬取bilibili视频" class="headerlink" title="【Python爬虫实例学习篇】——4、超详细爬取bilibili视频"></a>【Python爬虫实例学习篇】——4、超详细爬取bilibili视频</h1><p>由于经常在B站上学习，但无奈于家里网络太差，在线观看卡顿严重，于是萌生了下载视频的想法（如果只是单纯想下载视频，请用you-get库）。废话不多说直接开干。<br>（我发现好像很多人在爬bilibili视频的时候都有用到某个API然后还需要一个cid参数，这些在本文中没有用到。。。。）（另外再说明一下，第3篇文章没有通过审核，要看的话去公众号哈哈）<br><strong>使用工具</strong></p>
+<ol>
+<li>python3.6</li>
+<li>requests库</li>
+<li>lxml库（xpath解析）</li>
+<li>json库（解析json数据获取下载链接）</li>
+<li>ffmpeg（合并视频和音频）</li>
+</ol>
+<p><strong>目录</strong></p>
+<ol>
+<li><a href="#jump1">确定视频资源地址</a></li>
+<li><a href="#jump2">下载测试</a></li>
+<li><a href="#jump3">下载视频和音频（两种方法）</a></li>
+<li><a href="#jump4">合并视频和音频</a></li>
+<li><a href="#jump5"><strong>BiliBiliVideo.py</strong></a></li>
+<li><a href="#jump6">运行结果</a></li>
+</ol>
+<h1 id="确定视频资源地址"><a href="#确定视频资源地址" class="headerlink" title=" 确定视频资源地址 "></a><span id="jump1"> 确定视频资源地址 </span></h1><p>(1) 用Chrome随便打开一个视频，==Ctrl+Shift+C==选择视频框尝试获取视频的链接。结果发现获取的链接地址为：blob:<a href="https://www.bilibili.com/198785ae-c0e6-48c1-b27b-36c5af8935c6" target="_blank" rel="noopener">https://www.bilibili.com/198785ae-c0e6-48c1-b27b-36c5af8935c6</a> ，这是一个blob加密的链接，不能直接访问。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/2020011920572175.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="获取视频blob链接" title="">
+                </div>
+                <div class="image-caption">获取视频blob链接</div>
+            </figure>
+<p>(2) 网上查找资料后，<a href="https://blog.csdn.net/xingyun89114/article/details/80699527" target="_blank" rel="noopener">这篇文章</a>给了我灵感，思路：对网页抓包，抓取到视频分片的链接，再利用所抓到的链接信息进行定位。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/20200119213321709.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="Fiddler抓包获取视频分片链接" title="">
+                </div>
+                <div class="image-caption">Fiddler抓包获取视频分片链接</div>
+            </figure>
+<p>(3) 可以定位到所有视频分片的信息全部来源于 <a href="https://www.bilibili.com/video/av56643958" target="_blank" rel="noopener">https://www.bilibili.com/video/av56643958</a> </p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/20200119214014952.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="定位到地址" title="">
+                </div>
+                <div class="image-caption">定位到地址</div>
+            </figure> 
+<p>(4) 对这部分json代码进行解析（完整json数据太大，请自行去<a href="https://www.bilibili.com/" target="_blank" rel="noopener"> <strong>B站</strong> </a>找到对应位置观看），可以发现：<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;==quality==参数是指视频清晰度，112为高清1080p+、80为高清1080p、64为高清、32为清晰、16为流畅。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;==duration==参数是指视频长度，单位为秒。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;==frameRate==参数为帧率。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;==SegmentBase==参数应该是视频片初始片大小和片基址范围，单位为字节。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;==deadline==参数是在url里的参数，指示了链接失效的时间戳。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"code"</span>: <span class="number">0</span>, </span><br><span class="line">    <span class="attr">"message"</span>: <span class="string">"0"</span>, </span><br><span class="line">    <span class="attr">"ttl"</span>: <span class="number">1</span>, </span><br><span class="line">    <span class="attr">"data"</span>: &#123;</span><br><span class="line">        <span class="attr">"from"</span>: <span class="string">"local"</span>, </span><br><span class="line">        <span class="attr">"result"</span>: <span class="string">"suee"</span>, </span><br><span class="line">        <span class="attr">"message"</span>: <span class="string">""</span>, </span><br><span class="line">        <span class="attr">"quality"</span>: <span class="number">64</span>, </span><br><span class="line">        <span class="attr">"format"</span>: <span class="string">"flv720"</span>, </span><br><span class="line">        <span class="attr">"timelength"</span>: <span class="number">1504366</span>, </span><br><span class="line">        <span class="attr">"accept_format"</span>: <span class="string">"flv720,flv480,flv360"</span>, </span><br><span class="line">        <span class="attr">"accept_description"</span>: [</span><br><span class="line">            <span class="string">"高清 720P"</span>, </span><br><span class="line">            <span class="string">"清晰 480P"</span>, </span><br><span class="line">            <span class="string">"流畅 360P"</span></span><br><span class="line">        ], </span><br><span class="line">        <span class="attr">"accept_quality"</span>: [</span><br><span class="line">            <span class="number">64</span>, </span><br><span class="line">            <span class="number">32</span>, </span><br><span class="line">            <span class="number">16</span></span><br><span class="line">        ], </span><br><span class="line">        <span class="attr">"video_codecid"</span>: <span class="number">7</span>, </span><br><span class="line">        <span class="attr">"seek_param"</span>: <span class="string">"start"</span>, </span><br><span class="line">        <span class="attr">"seek_type"</span>: <span class="string">"offset"</span>, </span><br><span class="line">        <span class="attr">"dash"</span>: &#123;</span><br><span class="line">            <span class="attr">"duration"</span>: <span class="number">1505</span>, </span><br><span class="line">            <span class="attr">"minBufferTime"</span>: <span class="number">1.5</span>, </span><br><span class="line">            <span class="attr">"min_buffer_time"</span>: <span class="number">1.5</span>, </span><br><span class="line">            <span class="attr">"video"</span>: [</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="attr">"id"</span>: <span class="number">64</span>, </span><br><span class="line">                    <span class="attr">"baseUrl"</span>: <span class="string">"http://upos-sz-mirrorkodo.bilivideo.com/upgcxcode/03/88/98958803/98958803-1-30064.m4s?e=ig8euxZM2rNcNbdlhoNvNC8BqJIzNbfqXBvEqxTEto8BTrNvN0GvT90W5JZMkX_YN0MvXg8gNEV4NC8xNEV4N03eN0B5tZlqNxTEto8BTrNvNeZVuJ10Kj_g2UB02J0mN0B5tZlqNCNEto8BTrNvNC7MTX502C8f2jmMQJ6mqF2fka1mqx6gqj0eN0B599M=&amp;uipk=5&amp;nbs=1&amp;deadline=1579449043&amp;gen=playurl&amp;os=kodobv&amp;oi=1971869914&amp;trid=9412dee30c4640c6907ef910ea2cb04cu&amp;platform=pc&amp;upsig=4b952dd652c9922b546b99e44756fe0a&amp;uparams=e,uipk,nbs,deadline,gen,os,oi,trid,platform&amp;mid=352741151"</span>, </span><br><span class="line">                    <span class="attr">"base_url"</span>: <span class="string">"http://upos-sz-mirrorkodo.bilivideo.com/upgcxcode/03/88/98958803/98958803-1-30064.m4s?e=ig8euxZM2rNcNbdlhoNvNC8BqJIzNbfqXBvEqxTEto8BTrNvN0GvT90W5JZMkX_YN0MvXg8gNEV4NC8xNEV4N03eN0B5tZlqNxTEto8BTrNvNeZVuJ10Kj_g2UB02J0mN0B5tZlqNCNEto8BTrNvNC7MTX502C8f2jmMQJ6mqF2fka1mqx6gqj0eN0B599M=&amp;uipk=5&amp;nbs=1&amp;deadline=1579449043&amp;gen=playurl&amp;os=kodobv&amp;oi=1971869914&amp;trid=9412dee30c4640c6907ef910ea2cb04cu&amp;platform=pc&amp;upsig=4b952dd652c9922b546b99e44756fe0a&amp;uparams=e,uipk,nbs,deadline,gen,os,oi,trid,platform&amp;mid=352741151"</span>, </span><br><span class="line">                    <span class="attr">"backupUrl"</span>: [</span><br><span class="line">                        <span class="string">"http://upos-sz-mirrorks3.bilivideo.com/upgcxcode/03/88/98958803/98958803-1-30064.m4s?e=ig8euxZM2rNcNbdlhoNvNC8BqJIzNbfqXBvEqxTEto8BTrNvN0GvT90W5JZMkX_YN0MvXg8gNEV4NC8xNEV4N03eN0B5tZlqNxTEto8BTrNvNeZVuJ10Kj_g2UB02J0mN0B5tZlqNCNEto8BTrNvNC7MTX502C8f2jmMQJ6mqF2fka1mqx6gqj0eN0B599M=&amp;uipk=5&amp;nbs=1&amp;deadline=1579449043&amp;gen=playurl&amp;os=ks3bv&amp;oi=1971869914&amp;trid=9412dee30c4640c6907ef910ea2cb04cu&amp;platform=pc&amp;upsig=62448ee8270504e8e729d25fc402dc7f&amp;uparams=e,uipk,nbs,deadline,gen,os,oi,trid,platform&amp;mid=352741151"</span></span><br><span class="line">                    ], </span><br><span class="line">                    <span class="attr">"backup_url"</span>: [</span><br><span class="line">                        <span class="string">"http://upos-sz-mirrorks3.bilivideo.com/upgcxcode/03/88/98958803/98958803-1-30064.m4s?e=ig8euxZM2rNcNbdlhoNvNC8BqJIzNbfqXBvEqxTEto8BTrNvN0GvT90W5JZMkX_YN0MvXg8gNEV4NC8xNEV4N03eN0B5tZlqNxTEto8BTrNvNeZVuJ10Kj_g2UB02J0mN0B5tZlqNCNEto8BTrNvNC7MTX502C8f2jmMQJ6mqF2fka1mqx6gqj0eN0B599M=&amp;uipk=5&amp;nbs=1&amp;deadline=1579449043&amp;gen=playurl&amp;os=ks3bv&amp;oi=1971869914&amp;trid=9412dee30c4640c6907ef910ea2cb04cu&amp;platform=pc&amp;upsig=62448ee8270504e8e729d25fc402dc7f&amp;uparams=e,uipk,nbs,deadline,gen,os,oi,trid,platform&amp;mid=352741151"</span></span><br><span class="line">                    ], </span><br><span class="line">                    <span class="attr">"bandwidth"</span>: <span class="number">359889</span>, </span><br><span class="line">                    <span class="attr">"mimeType"</span>: <span class="string">"video/mp4"</span>, </span><br><span class="line">                    <span class="attr">"mime_type"</span>: <span class="string">"video/mp4"</span>, </span><br><span class="line">                    <span class="attr">"codecs"</span>: <span class="string">"avc1.64001F"</span>, </span><br><span class="line">                    <span class="attr">"width"</span>: <span class="number">960</span>, </span><br><span class="line">                    <span class="attr">"height"</span>: <span class="number">534</span>, </span><br><span class="line">                    <span class="attr">"frameRate"</span>: <span class="string">"25"</span>, </span><br><span class="line">                    <span class="attr">"frame_rate"</span>: <span class="string">"25"</span>, </span><br><span class="line">                    <span class="attr">"sar"</span>: <span class="string">"801:800"</span>, </span><br><span class="line">                    <span class="attr">"startWithSap"</span>: <span class="number">1</span>, </span><br><span class="line">                    <span class="attr">"start_with_sap"</span>: <span class="number">1</span>, </span><br><span class="line">                    <span class="attr">"SegmentBase"</span>: &#123;</span><br><span class="line">                        <span class="attr">"Initialization"</span>: <span class="string">"0-995"</span>, </span><br><span class="line">                        <span class="attr">"indexRange"</span>: <span class="string">"996-4639"</span></span><br><span class="line">                    &#125;, </span><br><span class="line">                    <span class="attr">"segment_base"</span>: &#123;</span><br><span class="line">                        <span class="attr">"initialization"</span>: <span class="string">"0-995"</span>, </span><br><span class="line">                        <span class="attr">"index_range"</span>: <span class="string">"996-4639"</span></span><br><span class="line">                    &#125;, </span><br><span class="line">                    <span class="attr">"codecid"</span>: <span class="number">7</span></span><br><span class="line">                &#125;, </span><br><span class="line">          	    <span class="comment">// 此处省略部分数据</span></span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="attr">"id"</span>: <span class="number">30216</span>, </span><br><span class="line">                    <span class="attr">"baseUrl"</span>: <span class="string">"http://upos-hz-mirrorks3u.acgvideo.com/upgcxcode/03/88/98958803/98958803-1-30216.m4s?e=ig8euxZM2rNcNbdlhoNvNC8BqJIzNbfqXBvEqxTEto8BTrNvN0GvT90W5JZMkX_YN0MvXg8gNEV4NC8xNEV4N03eN0B5tZlqNxTEto8BTrNvNeZVuJ10Kj_g2UB02J0mN0B5tZlqNCNEto8BTrNvNC7MTX502C8f2jmMQJ6mqF2fka1mqx6gqj0eN0B599M=&amp;uipk=5&amp;nbs=1&amp;deadline=1579449043&amp;gen=playurl&amp;os=ks3u&amp;oi=1971869914&amp;trid=9412dee30c4640c6907ef910ea2cb04cu&amp;platform=pc&amp;upsig=669eccff96c56f5586d174870a496b12&amp;uparams=e,uipk,nbs,deadline,gen,os,oi,trid,platform&amp;mid=352741151"</span>, </span><br><span class="line">                    <span class="attr">"base_url"</span>: <span class="string">"http://upos-hz-mirrorks3u.acgvideo.com/upgcxcode/03/88/98958803/98958803-1-30216.m4s?e=ig8euxZM2rNcNbdlhoNvNC8BqJIzNbfqXBvEqxTEto8BTrNvN0GvT90W5JZMkX_YN0MvXg8gNEV4NC8xNEV4N03eN0B5tZlqNxTEto8BTrNvNeZVuJ10Kj_g2UB02J0mN0B5tZlqNCNEto8BTrNvNC7MTX502C8f2jmMQJ6mqF2fka1mqx6gqj0eN0B599M=&amp;uipk=5&amp;nbs=1&amp;deadline=1579449043&amp;gen=playurl&amp;os=ks3u&amp;oi=1971869914&amp;trid=9412dee30c4640c6907ef910ea2cb04cu&amp;platform=pc&amp;upsig=669eccff96c56f5586d174870a496b12&amp;uparams=e,uipk,nbs,deadline,gen,os,oi,trid,platform&amp;mid=352741151"</span>, </span><br><span class="line">                    <span class="attr">"backupUrl"</span>: [</span><br><span class="line">                        <span class="string">"http://upos-sz-mirrorks3.bilivideo.com/upgcxcode/03/88/98958803/98958803-1-30216.m4s?e=ig8euxZM2rNcNbdlhoNvNC8BqJIzNbfqXBvEqxTEto8BTrNvN0GvT90W5JZMkX_YN0MvXg8gNEV4NC8xNEV4N03eN0B5tZlqNxTEto8BTrNvNeZVuJ10Kj_g2UB02J0mN0B5tZlqNCNEto8BTrNvNC7MTX502C8f2jmMQJ6mqF2fka1mqx6gqj0eN0B599M=&amp;uipk=5&amp;nbs=1&amp;deadline=1579449043&amp;gen=playurl&amp;os=ks3bv&amp;oi=1971869914&amp;trid=9412dee30c4640c6907ef910ea2cb04cu&amp;platform=pc&amp;upsig=b6d7b3957f5dbcbf686f267851ec42dd&amp;uparams=e,uipk,nbs,deadline,gen,os,oi,trid,platform&amp;mid=352741151"</span></span><br><span class="line">                    ], </span><br><span class="line">                    <span class="attr">"backup_url"</span>: [</span><br><span class="line">                        <span class="string">"http://upos-sz-mirrorks3.bilivideo.com/upgcxcode/03/88/98958803/98958803-1-30216.m4s?e=ig8euxZM2rNcNbdlhoNvNC8BqJIzNbfqXBvEqxTEto8BTrNvN0GvT90W5JZMkX_YN0MvXg8gNEV4NC8xNEV4N03eN0B5tZlqNxTEto8BTrNvNeZVuJ10Kj_g2UB02J0mN0B5tZlqNCNEto8BTrNvNC7MTX502C8f2jmMQJ6mqF2fka1mqx6gqj0eN0B599M=&amp;uipk=5&amp;nbs=1&amp;deadline=1579449043&amp;gen=playurl&amp;os=ks3bv&amp;oi=1971869914&amp;trid=9412dee30c4640c6907ef910ea2cb04cu&amp;platform=pc&amp;upsig=b6d7b3957f5dbcbf686f267851ec42dd&amp;uparams=e,uipk,nbs,deadline,gen,os,oi,trid,platform&amp;mid=352741151"</span></span><br><span class="line">                    ], </span><br><span class="line">                    <span class="attr">"bandwidth"</span>: <span class="number">67100</span>, </span><br><span class="line">                    <span class="attr">"mimeType"</span>: <span class="string">"audio/mp4"</span>, </span><br><span class="line">                    <span class="attr">"mime_type"</span>: <span class="string">"audio/mp4"</span>, </span><br><span class="line">                    <span class="attr">"codecs"</span>: <span class="string">"mp4a.40.2"</span>, </span><br><span class="line">                    <span class="attr">"width"</span>: <span class="number">0</span>, </span><br><span class="line">                    <span class="attr">"height"</span>: <span class="number">0</span>, </span><br><span class="line">                    <span class="attr">"frameRate"</span>: <span class="string">""</span>, </span><br><span class="line">                    <span class="attr">"frame_rate"</span>: <span class="string">""</span>, </span><br><span class="line">                    <span class="attr">"sar"</span>: <span class="string">""</span>, </span><br><span class="line">                    <span class="attr">"startWithSap"</span>: <span class="number">0</span>, </span><br><span class="line">                    <span class="attr">"start_with_sap"</span>: <span class="number">0</span>, </span><br><span class="line">                    <span class="attr">"SegmentBase"</span>: &#123;</span><br><span class="line">                        <span class="attr">"Initialization"</span>: <span class="string">"0-907"</span>, </span><br><span class="line">                        <span class="attr">"indexRange"</span>: <span class="string">"908-4551"</span></span><br><span class="line">                    &#125;, </span><br><span class="line">                    <span class="attr">"segment_base"</span>: &#123;</span><br><span class="line">                        <span class="attr">"initialization"</span>: <span class="string">"0-907"</span>, </span><br><span class="line">                        <span class="attr">"index_range"</span>: <span class="string">"908-4551"</span></span><br><span class="line">                    &#125;, </span><br><span class="line">                    <span class="attr">"codecid"</span>: <span class="number">0</span></span><br><span class="line">                &#125;</span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;, </span><br><span class="line">    <span class="attr">"session"</span>: <span class="string">"da9c24388db43b3dfe81ebd676d5e41b"</span>, </span><br><span class="line">    <span class="attr">"videoFrame"</span>: &#123; &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="下载测试"><a href="#下载测试" class="headerlink" title=" 下载测试"></a><span id="jump2"> 下载测试</span></h1><p>(1) 既然确定了上述链接就是我们要请求的视频链接，那么尝试直接发送获取请求看看。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;结果。。。。403错误，服务器拒绝访问。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/20200120155201233.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="403错误" title="">
+                </div>
+                <div class="image-caption">403错误</div>
+            </figure>
+<p>(2) 继续回到Fiddler检查抓包数据发现，同一链接反复出现。仔细观察返回码发现：返回码为200时无数据、请求方式为OPTIONS，返回码为206时有数据、请求方式为GET。查阅<a href="https://www.cnblogs.com/heioray/p/9392533.html" target="_blank" rel="noopener">资料</a>后猜测，在获取b站视频之前需要用OPTION方式向请求服务器分配资源，然后再用GET方式获取视频分片。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/2020012015584734.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="返回码不同" title="">
+                </div>
+                <div class="image-caption">返回码不同</div>
+            </figure>
+<p>(3) 下面进行获取一个视频分片的测试，考虑到不管是这个OPTIONS请求还是GET请求，其connect属性皆是kepp-alive，考虑使用requests.session()来保持会话。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="comment"># url1 为视频链接、url2为音频链接</span></span><br><span class="line">url=<span class="string">'https://cn-hbwh2-cmcc-bcache-07.bilivideo.com/upgcxcode/03/88/98958803/98958803-1-30064.m4s?e=ig8euxZM2rNcNbdlhoNvNC8BqJIzNbfqXBvEqxTEto8BTrNvN0GvT90W5JZMkX_YN0MvXg8gNEV4NC8xNEV4N03eN0B5tZlqNxTEto8BTrNvNeZVuJ10Kj_g2UB02J0mN0B5tZlqNCNEto8BTrNvNC7MTX502C8f2jmMQJ6mqF2fka1mqx6gqj0eN0B599M=&amp;uipk=5&amp;nbs=1&amp;deadline=1579518843&amp;gen=playurl&amp;os=bcache&amp;oi=1971869869&amp;trid=0cfd59d728114a54bd4747a01f87c9bbu&amp;platform=pc&amp;upsig=2a9e83f3258a7e2694bc83a5fbab8664&amp;uparams=e,uipk,nbs,deadline,gen,os,oi,trid,platform&amp;mid=352741151&amp;origin_cdn=ks3'</span></span><br><span class="line">url2=<span class="string">'http://upos-hz-mirrorks3u.acgvideo.com/upgcxcode/03/88/98958803/98958803-1-30216.m4s?e=ig8euxZM2rNcNbdlhoNvNC8BqJIzNbfqXBvEqxTEto8BTrNvN0GvT90W5JZMkX_YN0MvXg8gNEV4NC8xNEV4N03eN0B5tZlqNxTEto8BTrNvNeZVuJ10Kj_g2UB02J0mN0B5tZlqNCNEto8BTrNvNC7MTX502C8f2jmMQJ6mqF2fka1mqx6gqj0eN0B599M=&amp;uipk=5&amp;nbs=1&amp;deadline=1579519469&amp;gen=playurl&amp;os=ks3u&amp;oi=1971869869&amp;trid=99ee525d6c7f4bc8a414a537797e31f3u&amp;platform=pc&amp;upsig=ce817a7120709c60ac43cf095de05c8d&amp;uparams=e,uipk,nbs,deadline,gen,os,oi,trid,platform&amp;mid=352741151'</span></span><br><span class="line">headers1=&#123;</span><br><span class="line">    <span class="string">'Host'</span>: <span class="string">'cn-hbwh2-cmcc-bcache-04.bilivideo.com'</span>,</span><br><span class="line">    <span class="string">'Connection'</span>: <span class="string">'keep-alive'</span>,</span><br><span class="line">    <span class="string">'Access-Control-Request-Method'</span>: <span class="string">'GET'</span>,</span><br><span class="line">    <span class="string">'Origin'</span>: <span class="string">'https://www.bilibili.com'</span>,</span><br><span class="line">    <span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3970.5 Safari/537.36'</span>,</span><br><span class="line">    <span class="string">'Access-Control-Request-Headers'</span>: <span class="string">'range'</span>,</span><br><span class="line">    <span class="string">'Accept'</span>: <span class="string">'*/*'</span>,</span><br><span class="line">    <span class="string">'Sec-Fetch-Site'</span>: <span class="string">'cross-site'</span>,</span><br><span class="line">    <span class="string">'Sec-Fetch-Mode'</span>: <span class="string">'cors'</span>,</span><br><span class="line">    <span class="string">'Referer'</span>: <span class="string">'https://www.bilibili.com/video/av56643958?t=262'</span>,</span><br><span class="line">    <span class="string">'Accept-Encoding'</span>: <span class="string">'gzip, deflate, br'</span>,</span><br><span class="line">    <span class="string">'Accept-Language'</span>: <span class="string">'zh-CN,zh;q=0.9'</span></span><br><span class="line">&#125;</span><br><span class="line">headers2=&#123;</span><br><span class="line">    <span class="string">'Host'</span>: <span class="string">'cn-hbwh2-cmcc-bcache-04.bilivideo.com'</span>,</span><br><span class="line">    <span class="string">'Connection'</span>: <span class="string">'keep-alive'</span>,</span><br><span class="line">    <span class="string">'Origin'</span>: <span class="string">'https://www.bilibili.com'</span>,</span><br><span class="line">    <span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3970.5     Safari/537.36'</span>,</span><br><span class="line">    <span class="string">'Accept'</span>: <span class="string">'*/*'</span>,</span><br><span class="line">    <span class="string">'Sec-Fetch-Site'</span>: <span class="string">'cross-site'</span>,</span><br><span class="line">    <span class="string">'Sec-Fetch-Mode'</span>: <span class="string">'cors'</span>,</span><br><span class="line">    <span class="string">'Referer'</span>: <span class="string">'https://www.bilibili.com/video/av56643958?t=262'</span>,</span><br><span class="line">    <span class="string">'Accept-Encoding'</span>: <span class="string">'identity'</span>,</span><br><span class="line">    <span class="string">'Accept-Language'</span>: <span class="string">'zh-CN,zh;q=0.9'</span>,</span><br><span class="line">    <span class="string">'Range'</span>: <span class="string">'bytes=0-907'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">session=requests.session()</span><br><span class="line">session.options(url=url1,headers=headers1)</span><br><span class="line">res=session.get(url=url1,headers=headers2)</span><br><span class="line">print(res)</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'test1.mp4'</span>,<span class="string">'wb'</span>) <span class="keyword">as</span> fp:</span><br><span class="line">    fp.write(res.content)</span><br><span class="line">    fp.flush()</span><br><span class="line">    fp.close()</span><br></pre></td></tr></table></figure>
+<p>发现是能够成功下载视频的，但是该视频不能打开。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/20200120162948823.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="下载成功" title="">
+                </div>
+                <div class="image-caption">下载成功</div>
+            </figure>
+<p>(4) 重新设置Range的范围为’Range’: ‘bytes=0-4639000’ 后，视频大小为4.42MB，能够正常观看时长为59秒（视频无声音）。猜测：之前下载的908字节不足以构成一个（该视频分辨率为960*534，故猜测应该是62.57kb构成一个画面），另外视频无声音，查找资料后得知，B站的视频和音频是分离的（此时联想到json解析最后一组数据没有分辨率，猜测可能是音频的链接）。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/20200120164618877.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="正常观看" title="">
+                </div>
+                <div class="image-caption">正常观看</div>
+            </figure>
+<p>验证成功，最后一个链接为音频的链接</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/20200120172705366.png#pic_center" alt="音频文件" title="">
+                </div>
+                <div class="image-caption">音频文件</div>
+            </figure>
+<h3 id="3、下载视频和音频（两种方法）"><a href="#3、下载视频和音频（两种方法）" class="headerlink" title=" 3、下载视频和音频（两种方法）"></a><span id="jump3"> 3、下载视频和音频（两种方法）</span></h3><p>方法1：取消range参数直接一次下载整个视频或音频</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/20200120204829101.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="整段下载" title="">
+                </div>
+                <div class="image-caption">整段下载</div>
+            </figure>
+<p>方法2：利用416报错码进行分片下载，每次下载1MB的资源，最后一次将range设置为，’Range’: ‘bytes=上一次末尾-‘。从而实现分片下载。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/20200120205026191.png#pic_center" alt="416报错" title="">
+                </div>
+                <div class="image-caption">416报错</div>
+            </figure>
+<p>代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line"></span><br><span class="line"><span class="comment"># 防止因https证书问题报错</span></span><br><span class="line">requests.packages.urllib3.disable_warnings()</span><br><span class="line"></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3970.5 Safari/537.36'</span>,</span><br><span class="line">    <span class="string">'Referer'</span>: <span class="string">'https://www.bilibili.com/'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">GetBiliVideo</span><span class="params">(homeurl,session=requests.session<span class="params">()</span>)</span>:</span></span><br><span class="line">    res = session.get(url=homeurl, headers=headers, verify=<span class="literal">False</span>)</span><br><span class="line">    html = etree.HTML(res.content)</span><br><span class="line">    videoinforms = str(html.xpath(<span class="string">'//head/script[3]/text()'</span>)[<span class="number">0</span>])[<span class="number">20</span>:]</span><br><span class="line">    videojson = json.loads(videoinforms)</span><br><span class="line">    <span class="comment"># 获取视频链接和音频链接</span></span><br><span class="line">    VideoURL = videojson[<span class="string">'data'</span>][<span class="string">'dash'</span>][<span class="string">'video'</span>][<span class="number">0</span>][<span class="string">'baseUrl'</span>]</span><br><span class="line">    AudioURl = videojson[<span class="string">'data'</span>][<span class="string">'dash'</span>][<span class="string">'audio'</span>][<span class="number">0</span>][<span class="string">'baseUrl'</span>]</span><br><span class="line">    print(videojson)</span><br><span class="line">    <span class="comment">#获取视频资源的名称</span></span><br><span class="line">    name = str(html.xpath(<span class="string">"//h1/@title"</span>)[<span class="number">0</span>].encode(<span class="string">'ISO-8859-1'</span>).decode(<span class="string">'utf-8'</span>))</span><br><span class="line">    <span class="comment"># 下载视频和音频</span></span><br><span class="line">    BiliBiliDownload(url=VideoURL, name=name + <span class="string">'_Video'</span>, session=session)</span><br><span class="line">    BiliBiliDownload(homeurl,url=AudioURl, name=name + <span class="string">'_Audio'</span>, session=session)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">BiliBiliDownload</span><span class="params">(homeurl,url, name, session=requests.session<span class="params">()</span>)</span>:</span></span><br><span class="line">    headers.update(&#123;<span class="string">'Referer'</span>: homeurl&#125;)</span><br><span class="line">    session.options(url=url, headers=headers,verify=<span class="literal">False</span>)</span><br><span class="line">    <span class="comment"># 每次下载1M的数据</span></span><br><span class="line">    begin = <span class="number">0</span></span><br><span class="line">    end = <span class="number">1024</span>*<span class="number">512</span><span class="number">-1</span></span><br><span class="line">    flag=<span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        headers.update(&#123;<span class="string">'Range'</span>: <span class="string">'bytes='</span>+str(begin) + <span class="string">'-'</span> + str(end)&#125;)</span><br><span class="line">        res = session.get(url=url, headers=headers,verify=<span class="literal">False</span>)</span><br><span class="line">        <span class="keyword">if</span> res.status_code != <span class="number">416</span>:</span><br><span class="line">            begin = end + <span class="number">1</span></span><br><span class="line">            end = end + <span class="number">1024</span>*<span class="number">512</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            headers.update(&#123;<span class="string">'Range'</span>: str(end + <span class="number">1</span>) + <span class="string">'-'</span>&#125;)</span><br><span class="line">            res = session.get(url=url, headers=headers,verify=<span class="literal">False</span>)</span><br><span class="line">            flag=<span class="number">1</span></span><br><span class="line">        <span class="keyword">with</span> open(name + <span class="string">'.mp4'</span>, <span class="string">'ab'</span>) <span class="keyword">as</span> fp:</span><br><span class="line">            fp.write(res.content)</span><br><span class="line">            fp.flush()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># data=data+res.content</span></span><br><span class="line">        <span class="keyword">if</span> flag==<span class="number">1</span>:</span><br><span class="line">            fp.close()</span><br><span class="line">            <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+<h3 id="4、合并视频和音频"><a href="#4、合并视频和音频" class="headerlink" title=" 4、合并视频和音频"></a><span id="jump4"> 4、合并视频和音频</span></h3><p>合并视频和音频我查阅了很多资料，最终决定使用ffmpeg来完成这一操作。z在用合并之前，需要先去安装ffmpeg，详情请参考这篇文章 <a href="https://blog.csdn.net/qq_38161040/article/details/91654183" target="_blank" rel="noopener">ffmpeg安装</a>。若是运行过程中出现ffmpeg+一堆乱码,可以<a href="https://blog.csdn.net/wangliuqi123/article/details/80493695/" target="_blank" rel="noopener">参考这篇文章</a>。<br>下面是合并音频代码：</p>
+<ol>
+<li>需要先在ffmpeg库的video方法中添加如下代码：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 组合音频和视频 （自己加的）</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">combine_audio</span><span class="params">(video_file, audiio_file, out_file)</span>:</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        cmd =<span class="string">'D:/python/ffmpeg-20200115-0dc0837-win64-static/bin/ffmpeg -i '</span>+video_file+<span class="string">' -i '</span>+audiio_file+<span class="string">' -acodec copy '</span>+out_file</span><br><span class="line">        print(cmd)</span><br><span class="line">        subprocess.call(cmd, shell=<span class="literal">True</span>)  <span class="comment"># "Muxing Done</span></span><br><span class="line">        print(<span class="string">'Muxing Done'</span>)</span><br><span class="line">        <span class="keyword">if</span> res != <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">except</span> Exception:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure></li>
+<li>随后在自己的BiliBiliVideo.py中调用如下代码即可<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 一下path都需要使用全路径</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">CombineVideoAudio</span><span class="params">(videopath,audiopath,outpath)</span>:</span></span><br><span class="line">    ffmpeg.video.combine_audio(videopath,audiopath,outpath)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h1 id="BiliBiliVideo-py"><a href="#BiliBiliVideo-py" class="headerlink" title=" BiliBiliVideo.py"></a><span id="jump5"> BiliBiliVideo.py</span></h1><p>以下是完整代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line"><span class="keyword">import</span> ffmpeg.video</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">requests.packages.urllib3.disable_warnings()</span><br><span class="line"></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3970.5 Safari/537.36'</span>,</span><br><span class="line">    <span class="string">'Referer'</span>: <span class="string">'https://www.bilibili.com/'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">GetBiliVideo</span><span class="params">(homeurl,num,session=requests.session<span class="params">()</span>)</span>:</span></span><br><span class="line">    res = session.get(url=homeurl, headers=headers, verify=<span class="literal">False</span>)</span><br><span class="line">    html = etree.HTML(res.content)</span><br><span class="line">    videoinforms = str(html.xpath(<span class="string">'//head/script[3]/text()'</span>)[<span class="number">0</span>])[<span class="number">20</span>:]</span><br><span class="line">    videojson = json.loads(videoinforms)</span><br><span class="line">    <span class="comment"># 获取详情信息列表</span></span><br><span class="line">    <span class="comment">#listinform = str(html.xpath('//head/script[4]/text()')[0])</span></span><br><span class="line">    listinform = str(html.xpath(<span class="string">'//head/script[4]/text()'</span>)[<span class="number">0</span>].encode(<span class="string">'ISO-8859-1'</span>).decode(<span class="string">'utf-8'</span>))[<span class="number">25</span>:<span class="number">-122</span>]</span><br><span class="line">    listjson=json.loads(listinform)</span><br><span class="line">    <span class="comment"># 获取视频链接和音频链接</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="comment"># 2018年以后的b站视频，音频和视频分离</span></span><br><span class="line">        VideoURL = videojson[<span class="string">'data'</span>][<span class="string">'dash'</span>][<span class="string">'video'</span>][<span class="number">0</span>][<span class="string">'baseUrl'</span>]</span><br><span class="line">        AudioURl = videojson[<span class="string">'data'</span>][<span class="string">'dash'</span>][<span class="string">'audio'</span>][<span class="number">0</span>][<span class="string">'baseUrl'</span>]</span><br><span class="line">        flag=<span class="number">0</span></span><br><span class="line">    <span class="keyword">except</span> Exception:</span><br><span class="line">        <span class="comment"># 2018年以前的b站视频，格式为flv</span></span><br><span class="line">        VideoURL = videojson[<span class="string">'data'</span>][<span class="string">'durl'</span>][<span class="number">0</span>][<span class="string">'url'</span>]</span><br><span class="line">        flag=<span class="number">1</span></span><br><span class="line">    <span class="comment"># 获取文件夹的名称</span></span><br><span class="line">    dirname = str(html.xpath(<span class="string">"//h1/@title"</span>)[<span class="number">0</span>].encode(<span class="string">'ISO-8859-1'</span>).decode(<span class="string">'utf-8'</span>))</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(dirname):</span><br><span class="line">        <span class="comment"># 如果不存在则创建目录</span></span><br><span class="line">        <span class="comment"># 创建目录操作函数</span></span><br><span class="line">        os.makedirs(dirname)</span><br><span class="line">        print(<span class="string">'目录文件创建成功!'</span>)</span><br><span class="line">    <span class="comment"># 获取每一集的名称</span></span><br><span class="line">    name=listjson[<span class="string">'videoData'</span>][<span class="string">'pages'</span>][num][<span class="string">'part'</span>]</span><br><span class="line">    print(name)</span><br><span class="line">    <span class="comment"># 下载视频和音频</span></span><br><span class="line">    print(<span class="string">'正在下载 "'</span>+name+<span class="string">'" 的视频····'</span>)</span><br><span class="line">    BiliBiliDownload(homeurl=homeurl,url=VideoURL, name=os.getcwd()+<span class="string">'/'</span>+dirname+<span class="string">'/'</span>+name + <span class="string">'_Video.mp4'</span>, session=session)</span><br><span class="line">    <span class="keyword">if</span> flag==<span class="number">0</span>:</span><br><span class="line">        print(<span class="string">'正在下载 "'</span>+name+<span class="string">'" 的音频····'</span>)</span><br><span class="line">        BiliBiliDownload(homeurl=homeurl,url=AudioURl, name=os.getcwd()+<span class="string">'/'</span>+dirname+<span class="string">'/'</span>+name+ <span class="string">'_Audio.mp3'</span>, session=session)</span><br><span class="line">        print(<span class="string">'正在组合 "'</span>+name+<span class="string">'" 的视频和音频····'</span>)</span><br><span class="line">    <span class="comment"># CombineVideoAudio(name + '_Video.mp4',name + '_Audio.mp3',name + '_output.mp4')</span></span><br><span class="line">    print(<span class="string">' "'</span>+name+<span class="string">'" 下载完成！'</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">BiliBiliDownload</span><span class="params">(homeurl,url, name, session=requests.session<span class="params">()</span>)</span>:</span></span><br><span class="line">    headers.update(&#123;<span class="string">'Referer'</span>: homeurl&#125;)</span><br><span class="line">    session.options(url=url, headers=headers,verify=<span class="literal">False</span>)</span><br><span class="line">    <span class="comment"># 每次下载1M的数据</span></span><br><span class="line">    begin = <span class="number">0</span></span><br><span class="line">    end = <span class="number">1024</span>*<span class="number">512</span><span class="number">-1</span></span><br><span class="line">    flag=<span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        headers.update(&#123;<span class="string">'Range'</span>: <span class="string">'bytes='</span>+str(begin) + <span class="string">'-'</span> + str(end)&#125;)</span><br><span class="line">        res = session.get(url=url, headers=headers,verify=<span class="literal">False</span>)</span><br><span class="line">        <span class="keyword">if</span> res.status_code != <span class="number">416</span>:</span><br><span class="line">            begin = end + <span class="number">1</span></span><br><span class="line">            end = end + <span class="number">1024</span>*<span class="number">512</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            headers.update(&#123;<span class="string">'Range'</span>: str(end + <span class="number">1</span>) + <span class="string">'-'</span>&#125;)</span><br><span class="line">            res = session.get(url=url, headers=headers,verify=<span class="literal">False</span>)</span><br><span class="line">            flag=<span class="number">1</span></span><br><span class="line">        <span class="keyword">with</span> open(name, <span class="string">'ab'</span>) <span class="keyword">as</span> fp:</span><br><span class="line">            fp.write(res.content)</span><br><span class="line">            fp.flush()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># data=data+res.content</span></span><br><span class="line">        <span class="keyword">if</span> flag==<span class="number">1</span>:</span><br><span class="line">            fp.close()</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">CombineVideoAudio</span><span class="params">(videopath,audiopath,outpath)</span>:</span></span><br><span class="line">    ffmpeg.video.combine_audio(videopath,audiopath,outpath)</span><br><span class="line">    os.remove(videopath)</span><br><span class="line">    os.remove(audiopath)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line"></span><br><span class="line">    <span class="comment"># av44518113</span></span><br><span class="line">    av = input(<span class="string">'请输入视频号：'</span>)</span><br><span class="line">    url=<span class="string">'https://www.bilibili.com/video/'</span>+av</span><br><span class="line">    <span class="comment"># 视频选集</span></span><br><span class="line">    range_start=input(<span class="string">'从第几集开始？'</span>)</span><br><span class="line">    range_end = input(<span class="string">'到第几集结束？'</span>)</span><br><span class="line">    <span class="keyword">if</span> int(range_start)&lt;=int(range_end):</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(int(range_start),int(range_end)+<span class="number">1</span>):</span><br><span class="line">            GetBiliVideo(url+<span class="string">'?p='</span>+str(i),i<span class="number">-1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">'选集不合法！'</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="运行结果截图："><a href="#运行结果截图：" class="headerlink" title=" 运行结果截图："></a><span id="jump6"> 运行结果截图：</span></h1><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/2020012119084041.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="运行结果" title="">
+                </div>
+                <div class="image-caption">运行结果</div>
+            </figure>
+
+<h3 id="微信公众号："><a href="#微信公众号：" class="headerlink" title="==微信公众号：=="></a>==<strong>微信公众号：</strong>==</h3><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-blog.csdnimg.cn/20200121125047312.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="小术快跑" title="">
+                </div>
+                <div class="image-caption">小术快跑</div>
+            </figure>
+
+<script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
+<script>
+    const btw = new BTWPlugin();
+    btw.init({
+        id: 'container',
+        blogId: '19662-1579695695136-640',
+        name: '小术快跑呀',
+        qrcode: 'https://img-blog.csdnimg.cn/20200111100511753.jpg',
+        keyword: '趁年轻，快快跑~',
+    });
+</script>
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2020-02-06T13:03:54.080Z" itemprop="dateUpdated">2020-02-06 21:03:54</time>
+</span><br>
+
+
+        
+        <a href="https://blog.csdn.net/qq_40528553" target="_blank" rel="noopener">小术快跑呀，用于分享小术的程序人生；目前主要包括：Python爬虫学习，计算机视觉学习，人工智能学习，Matlab算法学习，安卓逆向学习，黑客技术学习等，致力于为计算机爱好者提供相互交流相互学习的共享平台。关注微信公众号 “小术快跑呀” 领取超多视频教程~</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://www.asyu17.cn">
+            <img src="/img/avatar.jpg" alt="ASYU17">
+            ASYU17
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/bilibili/" rel="tag">bilibili</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://www.asyu17.cn/2020/01/21/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%944%E3%80%81%E8%B6%85%E8%AF%A6%E7%BB%86%E7%88%AC%E5%8F%96bilibili%E8%A7%86%E9%A2%91.html&title=《【Python爬虫实例学习篇】——4、超详细爬取bilibili视频》 — 小术快跑呀&pic=https://www.asyu17.cn/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://www.asyu17.cn/2020/01/21/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%944%E3%80%81%E8%B6%85%E8%AF%A6%E7%BB%86%E7%88%AC%E5%8F%96bilibili%E8%A7%86%E9%A2%91.html&title=《【Python爬虫实例学习篇】——4、超详细爬取bilibili视频》 — 小术快跑呀&source=小术快跑呀，用于分享小术的程序人生；目前主要包括：Python爬虫学习，计算机视觉学习，人工智能学习，Matlab算法学习，安卓逆向学习，黑客技术学习等，..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://www.asyu17.cn/2020/01/21/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%944%E3%80%81%E8%B6%85%E8%AF%A6%E7%BB%86%E7%88%AC%E5%8F%96bilibili%E8%A7%86%E9%A2%91.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《【Python爬虫实例学习篇】——4、超详细爬取bilibili视频》 — 小术快跑呀&url=https://www.asyu17.cn/2020/01/21/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%944%E3%80%81%E8%B6%85%E8%AF%A6%E7%BB%86%E7%88%AC%E5%8F%96bilibili%E8%A7%86%E9%A2%91.html&via=https://www.asyu17.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://www.asyu17.cn/2020/01/21/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%944%E3%80%81%E8%B6%85%E8%AF%A6%E7%BB%86%E7%88%AC%E5%8F%96bilibili%E8%A7%86%E9%A2%91.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2020/01/30/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%945%E3%80%81%E3%80%90%E8%B6%85%E8%AF%A6%E7%BB%86%E8%AE%B0%E5%BD%95%E3%80%91%E4%BB%8E%E7%88%AC%E5%8F%96%E5%BE%AE%E5%8D%9A%E8%AF%84%E8%AE%BA%E6%95%B0%E6%8D%AE%EF%BC%88%E5%85%8D%E7%99%BB%E9%99%86%EF%BC%89%E5%88%B0%E7%94%9F%E6%88%90%E8%AF%8D%E4%BA%91.html" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">【Python爬虫实例学习篇】——5、【超详细记录】从爬取微博评论数据（免登陆）到生成词云</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2020/01/20/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%943%E3%80%81%E8%AE%BF%E9%97%AECSDN%E5%B9%B6%E7%BC%96%E8%AF%91%E6%88%90exe%E6%96%87%E4%BB%B6.html" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">【Python爬虫实例学习篇】——3、访问CSDN并编译成exe文件</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'asyu17',
+            repo: 'asyu17.github.io',
+            oauth: {
+                client_id: '389ed52b820dcc33c6d8',
+                client_secret: '3e514a4c0b03c8da5d84cdd4375305ce4b6df0d6',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>ASYU17 &copy; 2015 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://www.asyu17.cn/2020/01/21/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%944%E3%80%81%E8%B6%85%E8%AF%A6%E7%BB%86%E7%88%AC%E5%8F%96bilibili%E8%A7%86%E9%A2%91.html&title=《【Python爬虫实例学习篇】——4、超详细爬取bilibili视频》 — 小术快跑呀&pic=https://www.asyu17.cn/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://www.asyu17.cn/2020/01/21/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%944%E3%80%81%E8%B6%85%E8%AF%A6%E7%BB%86%E7%88%AC%E5%8F%96bilibili%E8%A7%86%E9%A2%91.html&title=《【Python爬虫实例学习篇】——4、超详细爬取bilibili视频》 — 小术快跑呀&source=小术快跑呀，用于分享小术的程序人生；目前主要包括：Python爬虫学习，计算机视觉学习，人工智能学习，Matlab算法学习，安卓逆向学习，黑客技术学习等，..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://www.asyu17.cn/2020/01/21/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%944%E3%80%81%E8%B6%85%E8%AF%A6%E7%BB%86%E7%88%AC%E5%8F%96bilibili%E8%A7%86%E9%A2%91.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《【Python爬虫实例学习篇】——4、超详细爬取bilibili视频》 — 小术快跑呀&url=https://www.asyu17.cn/2020/01/21/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%944%E3%80%81%E8%B6%85%E8%AF%A6%E7%BB%86%E7%88%AC%E5%8F%96bilibili%E8%A7%86%E9%A2%91.html&via=https://www.asyu17.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://www.asyu17.cn/2020/01/21/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91%E2%80%94%E2%80%944%E3%80%81%E8%B6%85%E8%AF%A6%E7%BB%86%E7%88%AC%E5%8F%96bilibili%E8%A7%86%E9%A2%91.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAW4AAAFuCAAAAACEya1TAAAGxklEQVR42u3aQW4bSRAEQP3/015gTwZskpmVI/ig4EmgzZ7u6DkkqurrK/78+v+TfP/rt8+r7/N/ff+rZIfv9/ZqJ/lJv77jgxs3bty4cf9g7l9vP8lG82O8h2vXz6+wXTN/gXJD3Lhx48aNG3fOnRy+DUO3OJjsqt1zGyjznbTxETdu3Lhx48b9FHcb15YiVHKYpHiU7+cWJXHjxo0bN27c/5b71jq6XcytG3ULecnFL2ERN27cuHHjxp1zJ82ztpWV/582aCbFrz3AtbH14V4lbty4cePG/SO5bzHO30dK3LhxY8WNG3dc3LlFuqVNtcTNfHioPcsef/+yMm7cuHHjxo07qJy0fE+1mp4NW7e2WdIUvBWeioogbty4cePGjfvUjroFvqWllFxkPgzUNgXzkaZkb7hx48aNGzfuhHsZZ8lLOUs56fuuLS+fLVeOGzdu3Lhx475xRzWtuHiUR8alhrPP0ixjTMUF4MaNGzdu3Lhj7jau3RpaeaDMy2Rt+ezWfss/HwZ6cOPGjRs3btxvrW7NsNvIzi0U3n771EuQXFtRmMONGzdu3LhxB3MmbeHm2WLWUmbKD3wrq7VXHjXPcOPGjRs3btxvuZPHt8FrH/FpD/ZU0SpviSXr4MaNGzdu3Lhz7r1B1casJcwlIW8vit1C5Nd+eNy4cePGjfsHc+cRZylm3aLkwpev9my7Lroq3Lhx48aNG3ewZl5qearNljPlUfWp5tl3DAzhxo0bN27cuG/VpBvobXSmLTbliMmATttmS57eDgbhxo0bN27cuF+VqN4fuy1mJcdoA2ISGW8v0K0Vl79YuHHjxo0bN+733HvRp93QLfbll70XktrCWX5tuHHjxo0bN+6c+3b4W3Rrh4FuYfE2ZrSc8YMqbty4cePGjTvmzjd3a7nt13kLbXsDrH1RXp4aN27cuHHjxh1wJ8WXWzFoX3NvdO3lp7w09mHPuHHjxo0bN+6Y+/2iefTZ49qtAdZeRh4K85U/nBc3bty4cePG3Z33gVLO3kJrW1xtkevWTlteAty4cePGjRt3wp1En2W0JRmyuRXLblEvb/Xlq+WGuHHjxo0bN+6dewmLeUmobkQ92kjLLz4vYBVTVLhx48aNGzfu337VRqWljJV/344BfUc7bX/t/rIabty4cePGjbucMFnKTO0Bbk9sW2u3gLgMIUXvOG7cuHHjxo07yCdJ0Gmj1bPX+ex40LP7KVpruHHjxo0bN+6Y+1buuTXM2gbeU+Wn9pt9n7hx48aNGzfuZQzlFg1vv70Vy3Km2yhSEeyS3eLGjRs3bty4T0nmWcTbOrf4mKyW8O1ttiLm4saNGzdu3LiDjT5b3Lm1xNrWXVsmy5twLShu3Lhx48aN+8adl12SDeUtqKVg9H3Ns6cKcMcuJW7cuHHjxv0judtCUtu+aotTS+vrRtmG4KWYhRs3bty4ceNOclpeJHp/1PzYbdGnbVAt17C39D6cHTdu3Lhx48b94lltQ2tpWS1h8XbB+cuRBL68OPXyt7hx48aNGzfuMg4ujai8wJR39trmWd7YS8pV+/hO1EjDjRs3bty4cZczJ21Ea7/PR3ny0Hkrii2XWqyJGzdu3Lhx434x1nMLeW2bbQ9nSVBb9tCOHNWFOdy4cePGjRt3wJ1DLAe7FZLaMZr9tchN6kYjbty4cePGjTvmvrWU8nZXO2qTrLZHunzny0APbty4cePGjTvn3ss37YPbRtft2vLV8lJXG2o/VARx48aNGzdu3H/8z3wQJ39kW4paYlxCthfgPjTGkuYZbty4cePGjTvgzre1sLYDOvvKSTjL235LmQw3bty4cePGnXMv4ztLnKqbT2UozJ/SvgTTU3Djxo0bN27cwVPystFSMGpD1W1gKI+PxwJTfLoPuRs3bty4cePG/duaSzBKCG4paIHLW1zfd/Ev/8aNGzdu3Lhxlxr5iE9bwMoLW7cy1lNDOftrVDT5cOPGjRs3btxlZ2dZ7taWy8tD+Z7bE+UxsR0ewo0bN27cuHG/Ot0+cJM31fLbblt3eduvfWJ+wdE148aNGzdu3LjXNetAdhujacluBbI21OYFqbb9hhs3bty4ceN+9az8qLfS1RL+bsWmtqjUlrryAlw904QbN27cuHHjDqLSU+M+eRy8Nc/ahlwbB/Pm2ctf4caNGzdu3Lgf4t45bnxt3LyN5uSBtS2THYMgbty4cePGjXvgfurvW23nVt5KyJ6Nnrhx48aNGzfuhLttnuVbaeNXG9Ta2LfHx1YGN27cuHHjxl3O4UwFoyU87YGsLWk99c1SsMONGzdu3Lhx//H5D/Gm+gbXaqxDAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+lazyScripts.push('//s95.cnzz.com/z_stat.php?id=1278601976&web_id=1278601976')
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
