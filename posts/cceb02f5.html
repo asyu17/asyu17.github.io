@@ -366,32 +366,38 @@
 
 
 
+
+
+
+
+
+
+
+
+
 <section class="comments" id="comments">
-    <div id="gitment_thread"></div>
-    <link rel="stylesheet" href="https://jjeejj.github.io/css/gitment.css">
-    <script src="https://www.wenjunjiang.win/js/gitment.js"></script>
+    <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
     <script>
-        var gitment = new Gitment({
-            id: 'Sun Feb 02 2020 21:57:01 GMT+0800',
-            owner: 'asyu17',
-            repo: 'blog-comment',
-            oauth: {
-                client_id: '389ed52b820dcc33c6d8',
-                client_secret: '3e514a4c0b03c8da5d84cdd4375305ce4b6df0d6',
-            },
+        var id = location.pathname
+        if (location.pathname.length > 50) {
+          id = location.pathname.replace(/\/\d+\/\d+\/\d+\//, '').replace('/', '').substring(0, 50)
+        }
+        const gitalk = new Gitalk({
+          clientID: '389ed52b820dcc33c6d8',
+          clientSecret: '3e514a4c0b03c8da5d84cdd4375305ce4b6df0d6',
+          repo: 'blog-comment',
+          owner: 'asyu17',
+          admin: ['asyu17'],
+          id: id,      // Ensure uniqueness and length less than 50
+          title: document.title.split('|')[0],
+          distractionFreeMode: false  // Facebook-like distraction free mode
         })
-        gitment.render('comments')
+
+        gitalk.render('gitalk-container')
     </script>
 </section>
-
-
-
-
-
-
-
-
-
 
 
 
