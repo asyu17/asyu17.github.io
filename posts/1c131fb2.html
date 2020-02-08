@@ -75,7 +75,7 @@
     
         <link rel="alternate" type="application/atom+xml" title="小术快跑呀" href="/atom.xml">
     
-    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="shortcut icon" href="/favicon.jpg">
     <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
     <script>window.lazyScripts=[]</script>
 
@@ -89,6 +89,8 @@
     <link href="https://use.fontawesome.com/releases/v5.0.4/css/all.css" rel="stylesheet">
 <meta name="generator" content="Hexo 4.2.0"></head>
 
+
+<script type="text/javascript" src="/js/click_love.js"></script>
 <body>
     <div id="loading" class="active"></div>
 
@@ -177,7 +179,7 @@
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
                 <i class="icon icon-lg icon-chevron-left"></i>
             </a>
-            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
                 <i class="icon icon-lg icon-search"></i>
             </a>
@@ -250,7 +252,7 @@
   <span class="post-meta-item-icon">
     <i class="fa fa-keyboard"></i>
     <span class="post-meta-item-text">  字数统计: </span>
-    <span class="post-count">1.9k 字</span>
+    <span class="post-count">1.7k 字</span>
   </span>
 </span>
 
@@ -259,7 +261,7 @@
   <span class="post-meta-item-icon">
     <i class="fa fa-hourglass-half"></i>
     <span class="post-meta-item-text">  阅读时长: </span>
-    <span class="post-count">7 分钟</span>
+    <span class="post-count">6 分钟</span>
   </span>
 </span>
                 
@@ -294,62 +296,9 @@
 </ul>
 <h1 id="搭建博客环境"><a href="#搭建博客环境" class="headerlink" title=" 搭建博客环境"></a><font face='黑体' color='DarkKhaki' size=5> 搭建博客环境</font></h1><h2 id="Node-js"><a href="#Node-js" class="headerlink" title=" Node.js"></a><font face='黑体' color='DarkOrange' size=4> Node.js</font></h2><p><strong>Node.js</strong> 下载地址：<a href="https://nodejs.org/zh-cn/" target="_blank" rel="noopener">https://nodejs.org/zh-cn/</a><br>小术选择的版本： <a href="https://nodejs.org/dist/v12.14.1/node-v12.14.1-x64.msi" target="_blank" rel="noopener">12.14.1 长期支持版</a><br>安装方法：<strong>一路默认~</strong>。</p>
 <h2 id="Git"><a href="#Git" class="headerlink" title=" Git"></a><font face='黑体' color='DarkOrange' size=4> Git</font></h2><p><strong>Git</strong> 下载地址：<a href="https://git-scm.com/download/win" target="_blank" rel="noopener">https://git-scm.com/download/win</a><br>镜像下载地址：<a href="https://npm.taobao.org/mirrors/git-for-windows/" target="_blank" rel="noopener">https://npm.taobao.org/mirrors/git-for-windows/</a><br>小术选择的版本：<a href="https://cdn.npm.taobao.org/dist/git-for-windows/v2.25.0.windows.1/Git-2.25.0-64-bit.exe" target="_blank" rel="noopener">2.25.0 -64bit</a><br>安装方法：<strong>一路默认~</strong>。</p>
-<h2 id="Hexo"><a href="#Hexo" class="headerlink" title=" Hexo"></a><font face='黑体' color='DarkOrange' size=4> Hexo</font></h2><p>在D盘中创建一个Hexo目录,随后进入目录，右键点击<strong>Git Base Here</strong>，进入MINGW64的页面。</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20200205144850234.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="创建Hexo目录" title="">
-                </div>
-                <div class="image-caption">创建Hexo目录</div>
-            </figure>
-<p>随后输入npm install -g hexo<br>若是长时间无反应可尝试先输入<strong>npm config set registry “<a href="https://registry.npm.taobao.org&quot;" target="_blank" rel="noopener">https://registry.npm.taobao.org&quot;</a></strong>,随后再输入<strong>npm install -g hexo</strong></p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20200205145741632.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="安装hexo" title="">
-                </div>
-                <div class="image-caption">安装hexo</div>
-            </figure>
-<p>输入 <strong>hexo init</strong> 进行初始化。(在这里我将目录改为 D:\asyu17_Blog\Hexo)</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20200205151224296.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="初始化" title="">
-                </div>
-                <div class="image-caption">初始化</div>
-            </figure>
-<p>完成后，依次输入 <strong>hexo generate</strong> 、<strong>hexo server</strong> ，启动服务后，可以在 <a href="http://localhost:4000/" target="_blank" rel="noopener">http://localhost:4000/</a> 查看效果。</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20200205151734925.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="启动服务" title="">
-                </div>
-                <div class="image-caption">启动服务</div>
-            </figure>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20200205151809612.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="效果展示" title="">
-                </div>
-                <div class="image-caption">效果展示</div>
-            </figure>
+<h2 id="Hexo"><a href="#Hexo" class="headerlink" title=" Hexo"></a><font face='黑体' color='DarkOrange' size=4> Hexo</font></h2><p>在D盘中创建一个Hexo目录,随后进入目录，右键点击<strong>Git Base Here</strong>，进入MINGW64的页面。<br><img src="https://img-blog.csdnimg.cn/20200205144850234.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="创建Hexo目录"><br>随后输入npm install -g hexo<br>若是长时间无反应可尝试先输入<strong>npm config set registry “<a href="https://registry.npm.taobao.org&quot;" target="_blank" rel="noopener">https://registry.npm.taobao.org&quot;</a></strong>,随后再输入<strong>npm install -g hexo</strong><br><img src="https://img-blog.csdnimg.cn/20200205145741632.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="安装hexo"><br>输入 <strong>hexo init</strong> 进行初始化。(在这里我将目录改为 D:\asyu17_Blog\Hexo)<br><img src="https://img-blog.csdnimg.cn/20200205151224296.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="初始化"><br>完成后，依次输入 <strong>hexo generate</strong> 、<strong>hexo server</strong> ，启动服务后，可以在 <a href="http://localhost:4000/" target="_blank" rel="noopener">http://localhost:4000/</a> 查看效果。<br><img src="https://img-blog.csdnimg.cn/20200205151734925.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="启动服务"><br><img src="https://img-blog.csdnimg.cn/20200205151809612.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="效果展示"></p>
 <h1 id="部署到Git-Pages"><a href="#部署到Git-Pages" class="headerlink" title=" 部署到Git Pages"></a><font face='黑体' color='DarkKhaki' size=5> 部署到Git Pages</font></h1><h2 id="注册Github帐号"><a href="#注册Github帐号" class="headerlink" title=" 注册Github帐号"></a><font face='黑体' color='DarkOrange' size=4> 注册Github帐号</font></h2><p>网址：<a href="https://github.com/" target="_blank" rel="noopener">https://github.com/</a></p>
-<h2 id="创建代码库"><a href="#创建代码库" class="headerlink" title=" 创建代码库"></a><font face='黑体' color='DarkOrange' size=4> 创建代码库</font></h2><p>进入个人主页后，点击 <strong>New</strong></p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20200205152830206.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="个人主页" title="">
-                </div>
-                <div class="image-caption">个人主页</div>
-            </figure>
-<p>创建仓库</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20200205153210983.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="创建项目d" title="">
-                </div>
-                <div class="image-caption">创建项目d</div>
-            </figure>
+<h2 id="创建代码库"><a href="#创建代码库" class="headerlink" title=" 创建代码库"></a><font face='黑体' color='DarkOrange' size=4> 创建代码库</font></h2><p>进入个人主页后，点击 <strong>New</strong><br><img src="https://img-blog.csdnimg.cn/20200205152830206.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="个人主页"><br>创建仓库<br><img src="https://img-blog.csdnimg.cn/20200205153210983.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="创建项目d"></p>
 <h2 id="配置SSH"><a href="#配置SSH" class="headerlink" title=" 配置SSH"></a><font face='黑体' color='DarkOrange' size=4> 配置SSH</font></h2><p>在gitlab，github上面拷贝代码时，通常用到了git clone ssh://XXX命令。其中ssh指secure shell（一种安全的网络协议），git使用这种协议进行远程加密登录。</p>
 <p><strong>git使用SSH配置， 初始需要以下三个步骤</strong></p>
 <ul>
@@ -357,229 +306,30 @@
 <li>将rsa公钥添加到代码托管平台 </li>
 <li>将rsa秘钥添加到ssh-agent中，为ssh client指定使用的秘钥文件 </li>
 </ul>
-<p>知道原理后，进行实操。<strong>Ctrl+C</strong>，停止hexo 服务，输入 <strong>ssh-keygen -t rsa -C</strong> +你的邮箱地址，<br>如：ssh-keygen -t rsa -C <a href="mailto:123@163.com">123@163.com</a>,随后<strong>一路按回车</strong>即可。</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20200205154623476.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述" title="">
-                </div>
-                <div class="image-caption">在这里插入图片描述</div>
-            </figure>
-<p>然后进入Github主页，点击头像，依次点击<strong>Settings–&gt;SSH and GPG keys–&gt;SSH keys–&gt;New SSH key</strong></p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20200205155019854.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="点击Settings" title="">
-                </div>
-                <div class="image-caption">点击Settings</div>
-            </figure>
-<p>添加密钥：</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20200205155722542.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70" alt="添加密钥" title="">
-                </div>
-                <div class="image-caption">添加密钥</div>
-            </figure>
-<p>下面测试连接<br>输入：<strong>ssh -T <a href="mailto:git@github.com">git@github.com</a></strong></p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20200205160253796.png" alt="测试1" title="">
-                </div>
-                <div class="image-caption">测试1</div>
-            </figure>
-<p>随后输入：<strong>yes</strong>，提示如下，则说明连接成功。</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20200205160405892.png" alt="提示" title="">
-                </div>
-                <div class="image-caption">提示</div>
-            </figure>
+<p>知道原理后，进行实操。<strong>Ctrl+C</strong>，停止hexo 服务，输入 <strong>ssh-keygen -t rsa -C</strong> +你的邮箱地址，<br>如：ssh-keygen -t rsa -C <a href="mailto:123@163.com">123@163.com</a>,随后<strong>一路按回车</strong>即可。<br><img src="https://img-blog.csdnimg.cn/20200205154623476.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>然后进入Github主页，点击头像，依次点击<strong>Settings–&gt;SSH and GPG keys–&gt;SSH keys–&gt;New SSH key</strong><br><img src="https://img-blog.csdnimg.cn/20200205155019854.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="点击Settings"><br>添加密钥：<br><img src="https://img-blog.csdnimg.cn/20200205155722542.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70" alt="添加密钥"><br>下面测试连接<br>输入：<strong>ssh -T <a href="mailto:git@github.com">git@github.com</a></strong><br><img src="https://img-blog.csdnimg.cn/20200205160253796.png" alt="测试1"><br>随后输入：<strong>yes</strong>，提示如下，则说明连接成功。<br><img src="https://img-blog.csdnimg.cn/20200205160405892.png" alt="提示"></p>
 <h2 id="配置个人信息"><a href="#配置个人信息" class="headerlink" title=" 配置个人信息"></a><font face='黑体' color='DarkOrange' size=4> 配置个人信息</font></h2><p>Git 会根据用户的名字和邮箱来记录提交，用户名可以自由更改。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global user.name &quot;此处填你的用户名&quot;  </span><br><span class="line">$ git config --global user.email  &quot;此处填你的邮箱&quot;</span><br></pre></td></tr></table></figure>
-<h2 id="上传博客"><a href="#上传博客" class="headerlink" title=" 上传博客"></a><font face='黑体' color='DarkOrange' size=4> 上传博客</font></h2><p>进入个人博客的仓库，点击 <strong>Clone or download</strong> 选择 <strong>Use SSH</strong></p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20200205161149531.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70" alt="use SSH" title="">
-                </div>
-                <div class="image-caption">use SSH</div>
-            </figure>
-<p>复制地址后，进入本地博客路径，如D:\asyu17_Blog\Hexo,使用文本打开 <strong>_config.yml</strong></p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20200205161548499.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70" alt="打开config" title="">
-                </div>
-                <div class="image-caption">打开config</div>
-            </figure>
-<p>随后，拉至最下面，找到如：</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20200205161752882.png" alt="寻找" title="">
-                </div>
-                <div class="image-caption">寻找</div>
-            </figure>
-<p>将其修改为如下所示，并保存。</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20200205162042376.png" alt="修改config" title="">
-                </div>
-                <div class="image-caption">修改config</div>
-            </figure>
-<p>接下来，在Hexo目录下点击Git Bash Here，依次输入</p>
+<h2 id="上传博客"><a href="#上传博客" class="headerlink" title=" 上传博客"></a><font face='黑体' color='DarkOrange' size=4> 上传博客</font></h2><p>进入个人博客的仓库，点击 <strong>Clone or download</strong> 选择 <strong>Use SSH</strong><br><img src="https://img-blog.csdnimg.cn/20200205161149531.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70" alt="use SSH"><br>复制地址后，进入本地博客路径，如D:\asyu17_Blog\Hexo,使用文本打开 <strong>_config.yml</strong><br><img src="https://img-blog.csdnimg.cn/20200205161548499.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70" alt="打开config"><br>随后，拉至最下面，找到如：<br><img src="https://img-blog.csdnimg.cn/20200205161752882.png" alt="寻找"><br>将其修改为如下所示，并保存。<br><img src="https://img-blog.csdnimg.cn/20200205162042376.png" alt="修改config"><br>接下来，在Hexo目录下点击Git Bash Here，依次输入</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
-<p>若是提示</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20200205162500614.png" alt="d错误" title="">
-                </div>
-                <div class="image-caption">d错误</div>
-            </figure>
-<p>则在输入 <strong>npm install hexo-deployer-git –save</strong> 后，再输入hexo d，随后再打开自己的项目仓库，会发现博客代码已经上传成功了~ 接下来就可以通过 <strong>https://你的用户名.github.io</strong> 来访问自己的博客了~，如：<a href="https://asyu17.github.io" target="_blank" rel="noopener">https://asyu17.github.io</a></p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/202002051626225.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="上传成功" title="">
-                </div>
-                <div class="image-caption">上传成功</div>
-            </figure>
-<h1 id="绑定域名"><a href="#绑定域名" class="headerlink" title=" 绑定域名"></a><font face='黑体' color='DarkKhaki' size=5> 绑定域名</font></h1><h1 id="购买域名"><a href="#购买域名" class="headerlink" title=" 购买域名"></a><font face='黑体' color='DarkOrange' size=4> 购买域名</font></h1><p>进入<a href="https://www.aliyun.com/" target="_blank" rel="noopener">阿里云</a>，输入想要注册的域名<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20200205170028548.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="域名" title="">
-                </div>
-                <div class="image-caption">域名</div>
-            </figure><br>选择一个比较满意的注册！ 注意注册年限一定要结合自己的实际情况！</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20200205170359666.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="域名" title="">
-                </div>
-                <div class="image-caption">域名</div>
-            </figure>
-<h2 id="绑定域名-1"><a href="#绑定域名-1" class="headerlink" title=" 绑定域名"></a><font face='黑体' color='DarkOrange' size=4> 绑定域名</font></h2><p>购买成功后，进入云解析，点击解析设置</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20200205182506983.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="进入云解析" title="">
-                </div>
-                <div class="image-caption">进入云解析</div>
-            </figure>
-<p>点击添加记录</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20200205182643888.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="添加记录" title="">
-                </div>
-                <div class="image-caption">添加记录</div>
-            </figure>
-<p>解析设置：</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20200205182914894.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="解析设置" title="">
-                </div>
-                <div class="image-caption">解析设置</div>
-            </figure>
-<p>继续添加第二条：（ip地址在cmd中输入ping asyu17.github.io得到）</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20200205183335801.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="解析设置2" title="">
-                </div>
-                <div class="image-caption">解析设置2</div>
-            </figure>
-<p>添加完成后，等待实名审核完成即可使用了。</p>
-<h1 id="个性化设置"><a href="#个性化设置" class="headerlink" title=" 个性化设置"></a><font face='黑体' color='DarkKhaki' size=5> 个性化设置</font></h1><h2 id="更换主题"><a href="#更换主题" class="headerlink" title=" 更换主题"></a><font face='黑体' color='DarkOrange' size=4> 更换主题</font></h2><p>进入主题商店：<a href="https://hexo.io/themes/" target="_blank" rel="noopener">https://hexo.io/themes/</a> 选择一个自己喜欢的主题。</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20200205190533590.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="主题选择" title="">
-                </div>
-                <div class="image-caption">主题选择</div>
-            </figure>
-<p>进入所选主题网站，下拉到最底下，找到基于Hexo的<strong>XXX</strong>主题搭建，点击<strong>XXX</strong>，进入Github页面。</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20200205190731841.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="例子" title="">
-                </div>
-                <div class="image-caption">例子</div>
-            </figure>
-<p>如：</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20200205190911638.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="github页面" title="">
-                </div>
-                <div class="image-caption">github页面</div>
-            </figure>
-<p>复制网址：</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20200205192407807.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="复制网址" title="">
-                </div>
-                <div class="image-caption">复制网址</div>
-            </figure>
-<p>随后再回到 <strong>Hexo</strong> 文件夹，进入<strong>themes</strong>文件夹，右键选择<strong>Git Base Here</strong>，输入命令：</p>
+<p>若是提示<br><img src="https://img-blog.csdnimg.cn/20200205162500614.png" alt="d错误"><br>则在输入 <strong>npm install hexo-deployer-git –save</strong> 后，再输入hexo d，随后再打开自己的项目仓库，会发现博客代码已经上传成功了~ 接下来就可以通过 <strong>https://你的用户名.github.io</strong> 来访问自己的博客了~，如：<a href="https://asyu17.github.io" target="_blank" rel="noopener">https://asyu17.github.io</a><br><img src="https://img-blog.csdnimg.cn/202002051626225.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="上传成功"></p>
+<h1 id="绑定域名"><a href="#绑定域名" class="headerlink" title=" 绑定域名"></a><font face='黑体' color='DarkKhaki' size=5> 绑定域名</font></h1><h1 id="购买域名"><a href="#购买域名" class="headerlink" title=" 购买域名"></a><font face='黑体' color='DarkOrange' size=4> 购买域名</font></h1><p>进入<a href="https://www.aliyun.com/" target="_blank" rel="noopener">阿里云</a>，输入想要注册的域名<img src="https://img-blog.csdnimg.cn/20200205170028548.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="域名"><br>选择一个比较满意的注册！ 注意注册年限一定要结合自己的实际情况！<br><img src="https://img-blog.csdnimg.cn/20200205170359666.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="域名"></p>
+<h2 id="绑定域名-1"><a href="#绑定域名-1" class="headerlink" title=" 绑定域名"></a><font face='黑体' color='DarkOrange' size=4> 绑定域名</font></h2><p>购买成功后，进入云解析，点击解析设置<br><img src="https://img-blog.csdnimg.cn/20200205182506983.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="进入云解析"><br>点击添加记录<br><img src="https://img-blog.csdnimg.cn/20200205182643888.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="添加记录"><br>解析设置：<br><img src="https://img-blog.csdnimg.cn/20200205182914894.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="解析设置"><br>继续添加第二条：（ip地址在cmd中输入ping asyu17.github.io得到）<br><img src="https://img-blog.csdnimg.cn/20200205183335801.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="解析设置2"><br>添加完成后，等待实名审核完成即可使用了。</p>
+<h1 id="个性化设置"><a href="#个性化设置" class="headerlink" title=" 个性化设置"></a><font face='黑体' color='DarkKhaki' size=5> 个性化设置</font></h1><h2 id="更换主题"><a href="#更换主题" class="headerlink" title=" 更换主题"></a><font face='黑体' color='DarkOrange' size=4> 更换主题</font></h2><p>进入主题商店：<a href="https://hexo.io/themes/" target="_blank" rel="noopener">https://hexo.io/themes/</a> 选择一个自己喜欢的主题。<br><img src="https://img-blog.csdnimg.cn/20200205190533590.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="主题选择"><br>进入所选主题网站，下拉到最底下，找到基于Hexo的<strong>XXX</strong>主题搭建，点击<strong>XXX</strong>，进入Github页面。<br><img src="https://img-blog.csdnimg.cn/20200205190731841.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="例子"><br>如：<br><img src="https://img-blog.csdnimg.cn/20200205190911638.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="github页面"><br>复制网址：</p>
+<p><img src="https://img-blog.csdnimg.cn/20200205192407807.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="复制网址"><br>随后再回到 <strong>Hexo</strong> 文件夹，进入<strong>themes</strong>文件夹，右键选择<strong>Git Base Here</strong>，输入命令：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git clone +网址</span><br></pre></td></tr></table></figure>
 <p>如：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git clone https:&#x2F;&#x2F;github.com&#x2F;blinkfox&#x2F;hexo-theme-matery</span><br></pre></td></tr></table></figure>
-<p>随后就会在theme目录下生成如下文件夹，<strong>hexo-theme-matery</strong> 就是我们下载的主题：</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20200205193758691.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="下载主题成功" title="">
-                </div>
-                <div class="image-caption">下载主题成功</div>
-            </figure>
-<p>随后用文本打开 <strong>_config.yml</strong>，找到<strong>theme</strong>，修改为，<strong>theme: hexo-theme-matery</strong>，然后关闭并保存。<br>然后在<strong>Hexo</strong>目录下找到<strong>source</strong>目录,添加<strong>CNAME</strong>文件,内容为：<strong><a href="http://www.asyu17.com" target="_blank" rel="noopener">www.asyu17.com</a></strong>，注意，不要添加任何后缀（CNAME文件的作用是确保跳转到www，如不添加该文件的话，输入<a href="http://www.asyu17.cn就会跳转到asyu17.cn。若添加该文件，输入asyu17.cn也会跳转到www.asyu17.cn）。" target="_blank" rel="noopener">www.asyu17.cn就会跳转到asyu17.cn。若添加该文件，输入asyu17.cn也会跳转到www.asyu17.cn）。</a></p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20200205194058806.png" alt="theme设置" title="">
-                </div>
-                <div class="image-caption">theme设置</div>
-            </figure>
-<p>在<strong>Hexo</strong>目录下，右键 <strong>Git Base Here</strong>，输入以下指令就可在 ：<a href="http://localhost:4000" target="_blank" rel="noopener">http://localhost:4000</a> 查看部署情况 </p>
+<p>随后就会在theme目录下生成如下文件夹，<strong>hexo-theme-matery</strong> 就是我们下载的主题：<br><img src="https://img-blog.csdnimg.cn/20200205193758691.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="下载主题成功"><br>随后用文本打开 <strong>_config.yml</strong>，找到<strong>theme</strong>，修改为，<strong>theme: hexo-theme-matery</strong>，然后关闭并保存。<br>然后在<strong>Hexo</strong>目录下找到<strong>source</strong>目录,添加<strong>CNAME</strong>文件,内容为：<strong><a href="http://www.asyu17.com" target="_blank" rel="noopener">www.asyu17.com</a></strong>，注意，不要添加任何后缀（CNAME文件的作用是确保跳转到www，如不添加该文件的话，输入<a href="http://www.asyu17.cn就会跳转到asyu17.cn。若添加该文件，输入asyu17.cn也会跳转到www.asyu17.cn）。" target="_blank" rel="noopener">www.asyu17.cn就会跳转到asyu17.cn。若添加该文件，输入asyu17.cn也会跳转到www.asyu17.cn）。</a><br><img src="https://img-blog.csdnimg.cn/20200205194058806.png" alt="theme设置"><br>在<strong>Hexo</strong>目录下，右键 <strong>Git Base Here</strong>，输入以下指令就可在 ：<a href="http://localhost:4000" target="_blank" rel="noopener">http://localhost:4000</a> 查看部署情况 </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g</span><br><span class="line">$ hexo s</span><br></pre></td></tr></table></figure>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20200205194842164.png" alt="例子" title="">
-                </div>
-                <div class="image-caption">例子</div>
-            </figure>
-<p>继续输入指令，即可部署到GitHub上：</p>
+<p><img src="https://img-blog.csdnimg.cn/20200205194842164.png" alt="例子"><br>继续输入指令，即可部署到GitHub上：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo g -d</span><br></pre></td></tr></table></figure>
-<p>效果图：</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20200206102512528.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="效果图" title="">
-                </div>
-                <div class="image-caption">效果图</div>
-            </figure>
-
-
+<p>效果图：<br><img src="https://img-blog.csdnimg.cn/20200206102512528.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="效果图"></p>
 <h1 id="参考文献"><a href="#参考文献" class="headerlink" title=" 参考文献"></a><font face='黑体' color='DarkKhaki' size=5> 参考文献</font></h1><p>小术也是第一次使用Github Pages和Hexo搭建自己的博客，在写的过程中一边实践，一边参考了以下几篇文章才最终完成，再次感谢这些大佬的无私奉献，若有侵权请联系我删除。</p>
 <blockquote>
 <p><a href="https://blog.csdn.net/qq_36759224/article/details/82121420" target="_blank" rel="noopener">1.《使用 Github Pages 和 Hexo 搭建自己的独立博客【超级详细的小白教程】》</a><br><a href="https://blog.csdn.net/qq_37210523/article/details/80909983" target="_blank" rel="noopener">2.《使用hexo+github搭建个人博客(进阶篇)》</a><br><a href="https://blog.csdn.net/AinUser/article/details/77609180" target="_blank" rel="noopener">3.《hexo+github搭建个人博客(超详细教程)》</a><br><a href="https://www.jianshu.com/p/7952b58bb37d" target="_blank" rel="noopener">4.《git ssh 配置与原理》</a></p>
 </blockquote>
-<h1 id="微信公众号："><a href="#微信公众号：" class="headerlink" title="==微信公众号：=="></a>==<strong>微信公众号：</strong>==</h1><figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20200121125047312.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="小术快跑" title="">
-                </div>
-                <div class="image-caption">小术快跑</div>
-            </figure>
+<h1 id="微信公众号："><a href="#微信公众号：" class="headerlink" title="==微信公众号：=="></a>==<strong>微信公众号：</strong>==</h1><p><img src="https://img-blog.csdnimg.cn/20200121125047312.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="小术快跑"></p>
+
                 </div>
 
                 <blockquote class="post-copyright">
@@ -587,7 +337,7 @@
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2020-02-07T04:20:35.416Z" itemprop="dateUpdated">2020-02-07 12:20:35</time>
+    最后更新时间：<time datetime="2020-02-07T04:20:35.416Z" itemprop="dateUpdated">2020-02-07 12:20:35</time>
 </span><br>
 
 
@@ -798,7 +548,7 @@
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
             
-            <span>This blog is licensed under a <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</span>
+            <span>博客内容遵循 <a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
         </p>
     </div>
     <div class="bottom">
@@ -870,7 +620,6 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 lazyScripts.push('//s95.cnzz.com/z_stat.php?id=1278601976&web_id=1278601976')
 
 </script>
-
 <script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
 
 

@@ -45,7 +45,7 @@
     
         <link rel="alternate" type="application/atom+xml" title="小术快跑呀" href="/atom.xml">
     
-    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="shortcut icon" href="/favicon.jpg">
     <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
     <script>window.lazyScripts=[]</script>
 
@@ -59,6 +59,8 @@
     <link href="https://use.fontawesome.com/releases/v5.0.4/css/all.css" rel="stylesheet">
 <meta name="generator" content="Hexo 4.2.0"></head>
 
+
+<script type="text/javascript" src="/js/click_love.js"></script>
 <body>
     <div id="loading" class="active"></div>
 
@@ -147,7 +149,7 @@
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
                 <i class="icon icon-lg icon-chevron-left"></i>
             </a>
-            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
                 <i class="icon icon-lg icon-search"></i>
             </a>
@@ -220,7 +222,7 @@
   <span class="post-meta-item-icon">
     <i class="fa fa-keyboard"></i>
     <span class="post-meta-item-text">  字数统计: </span>
-    <span class="post-count">595 字</span>
+    <span class="post-count">575 字</span>
   </span>
 </span>
 
@@ -242,40 +244,13 @@
                     <h1 id="【Python爬虫实例学习篇】——1、获取拉勾网职位信息"><a href="#【Python爬虫实例学习篇】——1、获取拉勾网职位信息" class="headerlink" title="【Python爬虫实例学习篇】——1、获取拉勾网职位信息"></a>【Python爬虫实例学习篇】——1、获取拉勾网职位信息</h1><p>   毕业季就要到了，打算上拉钩网爬一下有关实习岗位的招聘信息。刚写完几行代码进行调试发现一直提示：<br><strong>{“status”:false,”msg”== :”您操作太频繁,请稍后再访问”,”clientIp”:”223.155.85.177”,”state”:2402}</strong>，此时进入网页一看，能够正常进行访问，并没有出现上述提示语，据此判断存在反爬虫机制。经过一番尝试发现是cookie的问题，下面是解决问题的详细过程。</p>
 <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>一开始想用urllib库来获取招聘信息结果发现返回结果一直是操作频繁，代码如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> request,parse</span><br><span class="line"></span><br><span class="line">KeyWord=<span class="string">"python"</span></span><br><span class="line">url=<span class="string">"https://www.lagou.com/jobs/list_"</span>+KeyWord+<span class="string">"?&amp;cl=false&amp;fromSearch=true&amp;labelWords=&amp;suginput="</span></span><br><span class="line">url_GetJob=<span class="string">"https://www.lagou.com/jobs/positionAjax.json?needAddtionalResult=false"</span></span><br><span class="line">headers=&#123;</span><br><span class="line">    <span class="string">"User-Agent"</span>:<span class="string">"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3970.5 Safari/537.36"</span>,</span><br><span class="line">    <span class="string">"Referer"</span>:url</span><br><span class="line">&#125;</span><br><span class="line">data=&#123;</span><br><span class="line">    <span class="string">"first"</span>:<span class="string">"true"</span>,</span><br><span class="line">    <span class="string">"pn"</span>:<span class="string">"1"</span>,</span><br><span class="line">    <span class="string">"kd"</span>:KeyWord</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">req=request.Request(url_GetJob,headers=headers,data=parse.urlencode(data).encode(<span class="string">'utf-8'</span>))</span><br><span class="line">response=request.urlopen(req)</span><br><span class="line">print(response.read().decode(<span class="string">'utf-8'</span>))</span><br></pre></td></tr></table></figure>
-<p>返回结果为：</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20200110212307876.png" alt="错误信息" title="">
-                </div>
-                <div class="image-caption">错误信息</div>
-            </figure>
-<p>此时网页直接访问情况：</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/2020011021264351.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70" alt="网页访问状况" title="">
-                </div>
-                <div class="image-caption">网页访问状况</div>
-            </figure>
+<p>返回结果为：<br><img src="https://img-blog.csdnimg.cn/20200110212307876.png" alt="错误信息"><br>此时网页直接访问情况：<br><img src="https://img-blog.csdnimg.cn/2020011021264351.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70" alt="网页访问状况"></p>
 <h1 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h1><h2 id="方法1：利用http-cookiejar"><a href="#方法1：利用http-cookiejar" class="headerlink" title="方法1：利用http.cookiejar"></a>方法1：利用http.cookiejar</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> request, parse</span><br><span class="line"><span class="keyword">import</span> http.cookiejar</span><br><span class="line"></span><br><span class="line">KeyWord = <span class="string">"python"</span></span><br><span class="line">url = <span class="string">"https://www.lagou.com/jobs/list_"</span> + KeyWord + <span class="string">"?&amp;cl=false&amp;fromSearch=true&amp;labelWords=&amp;suginput="</span></span><br><span class="line">url_GetJob = <span class="string">"https://www.lagou.com/jobs/positionAjax.json?needAddtionalResult=false"</span></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">"User-Agent"</span>: <span class="string">"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3970.5 Safari/537.36"</span>,</span><br><span class="line">    <span class="string">"Referer"</span>: url</span><br><span class="line">&#125;</span><br><span class="line">data = &#123;</span><br><span class="line">    <span class="string">"first"</span>: <span class="string">"true"</span>,</span><br><span class="line">    <span class="string">"pn"</span>: <span class="string">"1"</span>,</span><br><span class="line">    <span class="string">"kd"</span>: KeyWord</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">cookie_jar = http.cookiejar.CookieJar()</span><br><span class="line">handler = request.HTTPCookieProcessor(cookie_jar)</span><br><span class="line">opener = request.build_opener(handler)</span><br><span class="line"></span><br><span class="line">req = request.Request(url, headers=headers)</span><br><span class="line">opener.open(req) <span class="comment"># 目的是获取Cookie</span></span><br><span class="line">req2=request.Request(url_GetJob,headers=headers, data=parse.urlencode(data).encode(<span class="string">'utf-8'</span>))</span><br><span class="line">res = opener.open(req2)</span><br><span class="line">print(res.read().decode(<span class="string">'utf-8'</span>))</span><br></pre></td></tr></table></figure>
 
 <h2 id="方法2：利用requests-session"><a href="#方法2：利用requests-session" class="headerlink" title="方法2：利用requests.session"></a>方法2：利用requests.session</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">KeyWord = <span class="string">"python"</span></span><br><span class="line">url = <span class="string">"https://www.lagou.com/jobs/list_"</span> + KeyWord + <span class="string">"?&amp;cl=false&amp;fromSearch=true&amp;labelWords=&amp;suginput="</span></span><br><span class="line">url_GetJob = <span class="string">"https://www.lagou.com/jobs/positionAjax.json?needAddtionalResult=false"</span></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">"User-Agent"</span>: <span class="string">"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3970.5 Safari/537.36"</span>,</span><br><span class="line">    <span class="string">"Referer"</span>: url</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建会话</span></span><br><span class="line">session = requests.session()</span><br><span class="line">res1 = session.get(url, headers=headers, verify=<span class="literal">False</span>)</span><br><span class="line"><span class="comment"># 保持会话提交表单</span></span><br><span class="line">data = &#123;</span><br><span class="line">    <span class="string">"first"</span>: <span class="string">"true"</span>,</span><br><span class="line">    <span class="string">"pn"</span>: <span class="string">"1"</span>,</span><br><span class="line">    <span class="string">"kd"</span>: KeyWord</span><br><span class="line">&#125;</span><br><span class="line">res = session.post(url_GetJob, headers=headers, data=data, verify=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
 
-<h1 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h1><figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/2020011021500635.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70" alt="正确返回结果" title="">
-                </div>
-                <div class="image-caption">正确返回结果</div>
-            </figure>
-<h1 id="微信公众号："><a href="#微信公众号：" class="headerlink" title="==微信公众号：=="></a>==<strong>微信公众号：</strong>==</h1><figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20200121125047312.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="小术快跑" title="">
-                </div>
-                <div class="image-caption">小术快跑</div>
-            </figure>
+<h1 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h1><p><img src="https://img-blog.csdnimg.cn/2020011021500635.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70" alt="正确返回结果"></p>
+<h1 id="微信公众号："><a href="#微信公众号：" class="headerlink" title="==微信公众号：=="></a>==<strong>微信公众号：</strong>==</h1><p><img src="https://img-blog.csdnimg.cn/20200121125047312.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="小术快跑"></p>
 <script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
 
 <script>
@@ -295,7 +270,7 @@
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2020-02-06T13:26:08.148Z" itemprop="dateUpdated">2020-02-06 21:26:08</time>
+    最后更新时间：<time datetime="2020-02-06T13:26:08.148Z" itemprop="dateUpdated">2020-02-06 21:26:08</time>
 </span><br>
 
 
@@ -499,7 +474,7 @@
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
             
-            <span>This blog is licensed under a <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</span>
+            <span>博客内容遵循 <a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
         </p>
     </div>
     <div class="bottom">
@@ -571,7 +546,6 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 lazyScripts.push('//s95.cnzz.com/z_stat.php?id=1278601976&web_id=1278601976')
 
 </script>
-
 <script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
 
 
