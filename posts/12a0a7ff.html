@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <link rel="canonical" href="www.asyu17.cn/posts/12a0a7ff.html">
+    
+    
+    <title>【Python爬虫实例学习篇】——7、获取免费IP代理进阶:在服务器上部署一个高可用代理池（2） | 小术快跑呀 | asyu17</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python,爬虫,代理,服务器,免费">
+    <meta name="description" content="【Python爬虫实例学习篇】——7、获取免费IP代理进阶: 在服务器上部署一个高可用代理池（2）第一次玩linux服务器，过程还是比较曲折，还好是边写边做，把碰到的问题全部记录下来了，希望对大家有所帮助~个人博客地址：www.asyu17.cn目录：  配置服务器 上传python代码 连接服务器  配置服务器 安装Xshell6下载地址：https:&#x2F;&#x2F;www.onlinedown.net&#x2F;s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Python爬虫实例学习篇】——7、获取免费IP代理进阶:在服务器上部署一个高可用代理池（2）">
+<meta property="og:url" content="https://www.asyu17.cn/posts/12a0a7ff.html">
+<meta property="og:site_name" content="小术快跑呀">
+<meta property="og:description" content="【Python爬虫实例学习篇】——7、获取免费IP代理进阶: 在服务器上部署一个高可用代理池（2）第一次玩linux服务器，过程还是比较曲折，还好是边写边做，把碰到的问题全部记录下来了，希望对大家有所帮助~个人博客地址：www.asyu17.cn目录：  配置服务器 上传python代码 连接服务器  配置服务器 安装Xshell6下载地址：https:&#x2F;&#x2F;www.onlinedown.net&#x2F;s">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020020812273547.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/202002081229153.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200208123012804.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200208123105323.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200208115727715.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200208123603552.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200208123813375.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200208123906601.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200208124334210.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200208124617831.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020020812551671.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200208125612688.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200208125847592.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200208131610910.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200208132844457.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200208132900301.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200208133014641.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200208143603466.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200208150556467.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200208153245376.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200208153326291.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200208164751714.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200208194653504.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200208190626476.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200208193820316.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200209141855188.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200209142059490.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200209142214301.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200209144138599.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200121125047312.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="article:published_time" content="2020-02-09T08:00:01.000Z">
+<meta property="article:modified_time" content="2020-02-09T08:35:44.766Z">
+<meta property="article:author" content="ASYU17">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="代理">
+<meta property="article:tag" content="服务器">
+<meta property="article:tag" content="免费">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/2020020812273547.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70">
+    
+        <link rel="alternate" type="application/atom+xml" title="小术快跑呀" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.jpg">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+    <link rel="stylesheet" href="/fa-brands/css/fa-brands.min.css">
+    <link rel="stylesheet" href="/fa-regular/css/fa-regular.min.css">
+    <link rel="stylesheet" href="/fa-solid/css/fa-solid.min.css">
+    <link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+    <link rel="stylesheet" href="/fontawesome-all/css/fontawesome-all.css">
+    <link href="https://use.fontawesome.com/releases/v5.0.4/css/all.css" rel="stylesheet">
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<script type="text/javascript" src="/js/click_love.js"></script>
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">ASYU17</h5>
+          <a href="mailto:asyu12@163.com" title="asyu12@163.com" class="mail">asyu12@163.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/asyu17" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://blog.csdn.net/qq_40528553" target="_blank" >
+                <i class="icon icon-lg icon-copyright"></i>
+                Csdn
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-link"></i>
+                关于
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">【Python爬虫实例学习篇】——7、获取免费IP代理进阶:在服务器上部署一个高可用代理池（2）</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">【Python爬虫实例学习篇】——7、获取免费IP代理进阶:在服务器上部署一个高可用代理池（2）</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2020-02-09T08:00:01.000Z" itemprop="datePublished" class="page-time">
+  2020-02-09
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91/">【Python爬虫实例学习篇】</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#【Python爬虫实例学习篇】——7、获取免费IP代理进阶-在服务器上部署一个高可用代理池（2）"><span class="post-toc-number">1.</span> <span class="post-toc-text">【Python爬虫实例学习篇】——7、获取免费IP代理进阶: 在服务器上部署一个高可用代理池（2）</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#配置服务器"><span class="post-toc-number">2.</span> <span class="post-toc-text">配置服务器</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#安装Xshell6"><span class="post-toc-number">2.1.</span> <span class="post-toc-text"> 安装Xshell6</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#给服务器安装python"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">给服务器安装python</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#安装脚本所需要的包"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">安装脚本所需要的包</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#安装MongoDB"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">安装MongoDB</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#上传python代码"><span class="post-toc-number">3.</span> <span class="post-toc-text">上传python代码</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#连接服务器"><span class="post-toc-number">4.</span> <span class="post-toc-text">连接服务器</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考文献"><span class="post-toc-number">5.</span> <span class="post-toc-text">参考文献</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#微信公众号："><span class="post-toc-number">5.0.1.</span> <span class="post-toc-text">&#x3D;&#x3D;微信公众号：&#x3D;&#x3D;</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-【Python爬虫实例学习篇】——7、获取免费IP代理进阶-在服务器上部署一个高可用代理池（2）"
+  class="post-article article-type-post fade" itemprop="blogPost">
+    <div class="post-card">
+        <h1 class="post-card-title">【Python爬虫实例学习篇】——7、获取免费IP代理进阶:在服务器上部署一个高可用代理池（2）</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2020-02-09 16:00:01" datetime="2020-02-09T08:00:01.000Z"  itemprop="datePublished">2020-02-09</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/%E3%80%90Python%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B%E5%AD%A6%E4%B9%A0%E7%AF%87%E3%80%91/">【Python爬虫实例学习篇】</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        <!-- 需要添加的位置 -->
+        <!-- 开始添加字数统计-->
+            
+                
+<span class="post-time">
+
+  <span class="post-meta-item-icon">
+    <i class="fa fa-keyboard"></i>
+    <span class="post-meta-item-text">  字数统计: </span>
+    <span class="post-count">1.3k 字</span>
+  </span>
+</span>
+
+<span class="post-time">
+
+  <span class="post-meta-item-icon">
+    <i class="fa fa-hourglass-half"></i>
+    <span class="post-meta-item-text">  阅读时长: </span>
+    <span class="post-count">5 分钟</span>
+  </span>
+</span>
+                
+            <!-- 添加完成 -->            
+        </div>
+        <div  id='container'>
+            <article>
+                <!-- 文章主体内容 -->
+                <div class="post-content" id="post-content" itemprop="postContent">
+                    <h1 id="【Python爬虫实例学习篇】——7、获取免费IP代理进阶-在服务器上部署一个高可用代理池（2）"><a href="#【Python爬虫实例学习篇】——7、获取免费IP代理进阶-在服务器上部署一个高可用代理池（2）" class="headerlink" title="【Python爬虫实例学习篇】——7、获取免费IP代理进阶: 在服务器上部署一个高可用代理池（2）"></a>【Python爬虫实例学习篇】——7、获取免费IP代理进阶: 在服务器上部署一个高可用代理池（2）</h1><p>第一次玩linux服务器，过程还是比较曲折，还好是边写边做，把碰到的问题全部记录下来了，希望对大家有所帮助~<br><font color='red' size=4><strong>个人博客地址：</font></strong><a href="www.asyu17.cn">www.asyu17.cn</a><br>目录：</p>
+<ol>
+<li>配置服务器</li>
+<li>上传python代码</li>
+<li>连接服务器</li>
+</ol>
+<h1 id="配置服务器"><a href="#配置服务器" class="headerlink" title="配置服务器"></a><font color='skyblue' size=5>配置服务器</font></h1><h2 id="安装Xshell6"><a href="#安装Xshell6" class="headerlink" title=" 安装Xshell6"></a><font color='blue' size=4> 安装Xshell6</font></h2><p>下载地址：<a href="https://www.onlinedown.net/soft/36383.htm" target="_blank" rel="noopener">https://www.onlinedown.net/soft/36383.htm</a><br>下载安装完成后，打开<font color='red' size=4><strong>xshell6</strong></font>，新建会话<br><img src="https://img-blog.csdnimg.cn/2020020812273547.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>输入<font color='red' size=4><strong>公有ip地址</strong></font>，进行连接<br><img src="https://img-blog.csdnimg.cn/202002081229153.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>接受并保存<br><img src="https://img-blog.csdnimg.cn/20200208123012804.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>随后输入完用户名和密码后，即可登陆成功：<br><img src="https://img-blog.csdnimg.cn/20200208123105323.png" alt="登陆成功"></p>
+<h2 id="给服务器安装python"><a href="#给服务器安装python" class="headerlink" title="给服务器安装python"></a><font color='blue' size=4>给服务器安装python</font></h2><p>去python官网选择一个python版本，这里以最新的python 3.9.0为例<br>下载地址：<a href="https://www.python.org/ftp/python/3.9.0/Python-3.9.0a1.tgz" target="_blank" rel="noopener">https://www.python.org/ftp/python/3.9.0/Python-3.9.0a1.tgz</a><br><img src="https://img-blog.csdnimg.cn/20200208115727715.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70" alt="选择版本"><br>再回到<font color='red' size=4><strong>xshell 6</strong></font>输入命令，等待安装完成</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;www.python.org&#x2F;ftp&#x2F;python&#x2F;3.9.0&#x2F;Python-3.9.0a1.tgz</span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdnimg.cn/20200208123603552.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>输入命令，<font color='red' size=4><strong>解压</strong></font>python文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -xvf Python-3.9.0a1.tgz</span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdnimg.cn/20200208123813375.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>输入命令，查看当前目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ll</span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdnimg.cn/20200208123906601.png" alt="在这里插入图片描述"><br>随后依次输入命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd Python-3.9.0a1</span><br><span class="line"></span><br><span class="line">.&#x2F;configure --prefix&#x3D;&#x2F;usr&#x2F;local&#x2F;python3Dir         &#x2F;&#x2F; 用于指定安装目录</span><br></pre></td></tr></table></figure>
+<p>出现未安装合适编译器的问题<br><img src="https://img-blog.csdnimg.cn/20200208124334210.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>因此输入命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install gcc</span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdnimg.cn/20200208124617831.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>安装完成后，输入命令进行编译</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;configure --prefix&#x3D;&#x2F;usr&#x2F;local&#x2F;python3Dir </span><br><span class="line">make</span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdnimg.cn/2020020812551671.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>进行安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make install</span><br></pre></td></tr></table></figure>
+<p>出现错误，缺少zlib相关的包<br><img src="https://img-blog.csdnimg.cn/20200208125612688.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>输入命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install zlib*</span><br></pre></td></tr></table></figure>
+<p>完成后，再次输入命令进行安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make install</span><br></pre></td></tr></table></figure>
+<p>安装成功<br><img src="https://img-blog.csdnimg.cn/20200208125847592.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>切换到/usr/local/python3Dir 目录下查看<br><img src="https://img-blog.csdnimg.cn/20200208131610910.png" alt="在这里插入图片描述"><br>进入<font color='red' size=4><strong>/usr/bin</strong> </font>目录，<font color='red' size=4><strong>删除python 和pip文件夹</strong></font></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;usr&#x2F;bin</span><br><span class="line">rm -rf python</span><br><span class="line">rm -rf pip</span><br><span class="line">rm -rf easy_install</span><br></pre></td></tr></table></figure>
+
+<p>随后创建软链接</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ln -s &#x2F;usr&#x2F;local&#x2F;python3Dir&#x2F;bin&#x2F;python3 &#x2F;usr&#x2F;bin&#x2F;python</span><br><span class="line">ln -s &#x2F;usr&#x2F;local&#x2F;python3Dir&#x2F;bin&#x2F;pip3 &#x2F;usr&#x2F;bin&#x2F;pip</span><br><span class="line">ln -s &#x2F;usr&#x2F;local&#x2F;python3Dir&#x2F;bin&#x2F;easy_install &#x2F;usr&#x2F;bin&#x2F;easy_install</span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdnimg.cn/20200208132844457.png" alt="在这里插入图片描述"><br>效果图<br><img src="https://img-blog.csdnimg.cn/20200208132900301.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200208133014641.png" alt="在这里插入图片描述"></p>
+<h2 id="安装脚本所需要的包"><a href="#安装脚本所需要的包" class="headerlink" title="安装脚本所需要的包"></a><font color='blue' size=4>安装脚本所需要的包</font></h2><p>依次输入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pip install requests</span><br><span class="line">pip install lxml</span><br><span class="line">pip install pymongo</span><br></pre></td></tr></table></figure>
+<p>若是安装<font color='red' size=4><strong>lxml</strong></font>出现这个错误：<br><img src="https://img-blog.csdnimg.cn/20200208143603466.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>是由于没有<font color='red' size=4><strong>_ctypes包</strong></font>，需要回到<font color='red' size=4>** /asyu17/python3/Python-3.9.0a1**</font>目录下重新安装<br>命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;asyu17&#x2F;python3&#x2F;Python-3.9.0a1</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+<p>重新安装完python后，即可正常lxml了<br><img src="https://img-blog.csdnimg.cn/20200208150556467.png" alt="在这里插入图片描述"></p>
+<h2 id="安装MongoDB"><a href="#安装MongoDB" class="headerlink" title="安装MongoDB"></a><font color='blue' size=4>安装MongoDB</font></h2><p>首先，配置包管理系统</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi &#x2F;etc&#x2F;yum.repos.d&#x2F;mongodb-org-3.4.repo</span><br></pre></td></tr></table></figure>
+<p>粘贴：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[mongodb-org-3.4]</span><br><span class="line">name&#x3D;MongoDB Repository</span><br><span class="line">baseurl&#x3D;https:&#x2F;&#x2F;repo.mongodb.org&#x2F;yum&#x2F;redhat&#x2F;$releasever&#x2F;mongodb-org&#x2F;3.4&#x2F;x86_64&#x2F;</span><br><span class="line">gpgcheck&#x3D;1</span><br><span class="line">enabled&#x3D;1</span><br><span class="line">gpgkey&#x3D;https:&#x2F;&#x2F;www.mongodb.org&#x2F;static&#x2F;pgp&#x2F;server-3.4.asc</span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdnimg.cn/20200208153245376.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>再依次按 <font color='red' size=4><strong>Esc–&gt;:–&gt;x–&gt;Enter</strong></font>，退出并保存 </p>
+<p>随后使用yum安装<font color='red' size=4><strong>MongDB</strong> </font></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y mongodb-org</span><br></pre></td></tr></table></figure>
+<p>等待安装完成，大约需要<font color='red' size=4><strong>半小时</strong> </font>。<br><img src="https://img-blog.csdnimg.cn/20200208153326291.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>安装完成后输入命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi &#x2F;etc&#x2F;mongod.conf</span><br></pre></td></tr></table></figure>
+<p><font color='red' size=3>修改<strong>127.0.0.1</strong>为<strong>0.0.0.0</strong></font>，否则我们的主机无法访问服务器的MongoDB<br><img src="https://img-blog.csdnimg.cn/20200208164751714.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>完成后，保存退出<br>输入启动命令，启动服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">systemctl start mongod.service       # 启动</span><br><span class="line">systemctl stop mongod.service        # 停止</span><br><span class="line"></span><br><span class="line">systemctl status mongod.service      # 查看日志   可以用于判别是否启动</span><br></pre></td></tr></table></figure>
+<p>外网访问需要关闭防火墙，因此需要输入下面命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop firewalld.service     #停止firewall</span><br><span class="line">systemctl disable firewalld.service  #禁止firewall开机启动</span><br></pre></td></tr></table></figure>
+
+<h1 id="上传python代码"><a href="#上传python代码" class="headerlink" title="上传python代码"></a><font color='skyblue' size=5>上传python代码</font></h1><p>依次输入如下代码，在编辑时粘贴我们的proxypool代码并保存即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mkdir proxypool            # 创建目录</span><br><span class="line">mkdir init.py              # 创建脚本文件</span><br><span class="line">mkdir proxy_pool.py        # 创建脚本文件</span><br><span class="line">vim ini.py                 # 编辑脚本文件</span><br><span class="line">vim proxy_pool.py          # 编辑脚本文件</span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdnimg.cn/20200208194653504.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>运行代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python init.py</span><br></pre></td></tr></table></figure>
+<p>SSl错误：<br><img src="https://img-blog.csdnimg.cn/20200208190626476.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70" alt="SSL错误"><br>python默认安装ssl功能是不可用的，解决办法是重新编译python3安装文件，加上–with-ssl参数就可以让pip3使用ssl功能了（如果出现Could not import runpy module，就进入编译目录输入make clean，再重复这一操作）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;configure --prefix&#x3D;&#x2F;usr&#x2F;local&#x2F;python3 --enable-optimizations --with-ssl</span><br><span class="line">make</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+<p>随后就可以正常使用了：<br><img src="https://img-blog.csdnimg.cn/20200208193820316.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70" alt="成功"></p>
+<h1 id="连接服务器"><a href="#连接服务器" class="headerlink" title="连接服务器"></a><font color='skyblue' size=5>连接服务器</font></h1><p>先去阿里云服务器添加安全组，添加一个27017<br><img src="https://img-blog.csdnimg.cn/20200209141855188.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>配置规则<br><img src="https://img-blog.csdnimg.cn/20200209142059490.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200209142214301.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>完成后，只需确保MongoDB在服务器上是启动的，即可进行调用了，调用示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Proxy_Pool <span class="keyword">import</span> proxy_pool</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    pool=proxy_pool.proxyPool()</span><br><span class="line">    pool.__init__(host=<span class="string">'你的主机地址'</span>)</span><br><span class="line">    print(<span class="string">'当前代理池内的代理数：%i'</span>%pool.get_count())</span><br><span class="line">    print(pool.get_iplist(<span class="number">20</span>))</span><br></pre></td></tr></table></figure>
+<p>调用效果<br><img src="https://img-blog.csdnimg.cn/20200209144138599.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>至此，只需确保我们的代码在服务器后台持续运行，即可有有源源不断的高可用代理ip地址了~<br>代码在服务器后台运行命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">python init.py &amp;    # 保持持续后台运行</span><br><span class="line">ps                  # 查看运行程序的句柄</span><br><span class="line">kill + 程序句柄      # 停止程序运行</span><br></pre></td></tr></table></figure>
+
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a><font color='skyblue' size=5>参考文献</font></h1><blockquote>
+<p>1.<a href="https://blog.csdn.net/sdu_hao/article/details/82938636" target="_blank" rel="noopener">Linux杂谈 | (2)在Linux服务器上搭建Python3环境</a><br>2. <a href="https://blog.csdn.net/qq_36918149/article/details/92381446" target="_blank" rel="noopener">CentOS环境安装mongoDB</a><br>3. <a href="https://www.cnblogs.com/jiayoubobo/p/11176818.html" target="_blank" rel="noopener">yum安装MongoDB</a><br>4. <a href="http://www.zhangc.cn/?id=94" target="_blank" rel="noopener">Linux中Python3.6.6使用pip3安装第三方库报错pip is configured with locations that require TLS/SSL</a><br>5. <a href="https://jingyan.baidu.com/article/a501d80c484876ec630f5ed9.html" target="_blank" rel="noopener">linux上怎么把python程序丢到后台执行？</a></p>
+</blockquote>
+<h3 id="微信公众号："><a href="#微信公众号：" class="headerlink" title="==微信公众号：=="></a>==<strong>微信公众号：</strong>==</h3><p><img src="https://img-blog.csdnimg.cn/20200121125047312.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQwNTI4NTUz,size_16,color_FFFFFF,t_70#pic_center" alt="小术快跑"></p>
+
+                </div>
+
+                <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2020-02-09T08:35:44.766Z" itemprop="dateUpdated">2020-02-09 16:35:44</time>
+</span><br>
+
+
+        
+        <a href="https://blog.csdn.net/qq_40528553" target="_blank" rel="noopener">小术快跑呀，用于分享小术的程序人生；目前主要包括：Python爬虫学习，计算机视觉学习，人工智能学习，Matlab算法学习，安卓逆向学习，黑客技术学习等，致力于为计算机爱好者提供相互交流相互学习的共享平台。关注微信公众号 “小术快跑呀” 领取超多视频教程~</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://www.asyu17.cn">
+            <img src="/img/avatar.jpg" alt="ASYU17">
+            ASYU17
+        </a>
+    </footer>
+</blockquote>
+
+                
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+                <div class="post-footer">
+                    
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%90%86/" rel="tag">代理</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%85%8D%E8%B4%B9/" rel="tag">免费</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="tag">服务器</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a></li></ul>
+
+
+                    
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://www.asyu17.cn/posts/12a0a7ff.html&title=《【Python爬虫实例学习篇】——7、获取免费IP代理进阶:在服务器上部署一个高可用代理池（2）》 — 小术快跑呀&pic=https://www.asyu17.cn/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://www.asyu17.cn/posts/12a0a7ff.html&title=《【Python爬虫实例学习篇】——7、获取免费IP代理进阶:在服务器上部署一个高可用代理池（2）》 — 小术快跑呀&source=小术快跑呀，用于分享小术的程序人生；目前主要包括：Python爬虫学习，计算机视觉学习，人工智能学习，Matlab算法学习，安卓逆向学习，黑客技术学习等，..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://www.asyu17.cn/posts/12a0a7ff.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《【Python爬虫实例学习篇】——7、获取免费IP代理进阶:在服务器上部署一个高可用代理池（2）》 — 小术快跑呀&url=https://www.asyu17.cn/posts/12a0a7ff.html&via=https://www.asyu17.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://www.asyu17.cn/posts/12a0a7ff.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+                </div>
+                <script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
+                <script>
+                    const btw = new BTWPlugin();
+                    btw.init({
+                        id: 'container',
+                        blogId: '19662-1581054157446-870',
+                        name: '小术快跑呀',
+                        qrcode: 'https://img-blog.csdnimg.cn/20200111100511753.jpg',
+                        keyword: '验证码',
+                    });
+                </script>
+            </article>
+        </div>
+    </div>
+        
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/posts/66adcef.html" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">【Python爬虫实例学习篇】——6、获取免费IP代理进阶:在服务器上部署一个高可用代理池（1）</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+        var id = location.pathname
+        if (location.pathname.length > 50) {
+          id = location.pathname.replace(/\/\d+\/\d+\/\d+\//, '').replace('/', '').substring(0, 50)
+        }
+        const gitalk = new Gitalk({
+          clientID: '389ed52b820dcc33c6d8',
+          clientSecret: '3e514a4c0b03c8da5d84cdd4375305ce4b6df0d6',
+          repo: 'blog-comment',
+          owner: 'asyu17',
+          admin: ['asyu17'],
+          id: id,      // Ensure uniqueness and length less than 50
+          title: document.title.split('|')[0],
+          distractionFreeMode: false  // Facebook-like distraction free mode
+        })
+
+        gitalk.render('gitalk-container')
+    </script>
+</section>
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+
+        
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>ASYU17 &copy; 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://www.asyu17.cn/posts/12a0a7ff.html&title=《【Python爬虫实例学习篇】——7、获取免费IP代理进阶:在服务器上部署一个高可用代理池（2）》 — 小术快跑呀&pic=https://www.asyu17.cn/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://www.asyu17.cn/posts/12a0a7ff.html&title=《【Python爬虫实例学习篇】——7、获取免费IP代理进阶:在服务器上部署一个高可用代理池（2）》 — 小术快跑呀&source=小术快跑呀，用于分享小术的程序人生；目前主要包括：Python爬虫学习，计算机视觉学习，人工智能学习，Matlab算法学习，安卓逆向学习，黑客技术学习等，..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://www.asyu17.cn/posts/12a0a7ff.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《【Python爬虫实例学习篇】——7、获取免费IP代理进阶:在服务器上部署一个高可用代理池（2）》 — 小术快跑呀&url=https://www.asyu17.cn/posts/12a0a7ff.html&via=https://www.asyu17.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://www.asyu17.cn/posts/12a0a7ff.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABzElEQVR42u3awW7DIBAE0P7/T6dS1VsbPAOGutLzKbIT/MhhBcN+fMTX6+tK7r+GVzLmDRcuLu4yN3nBz8/J0/H95OkvU8LFxT3IHRepiyHiX40nGRVQXFzch3ETRDsCLi7uf+cmLxjvVpLJ4OLiPod71+YkXwZt36vh4uIucNvAdMfnjfkuLi5uyX2VVxKJ7njv98i4uLhHuOOD0vaoNd/MjP+Ci8nj4uJu5o5/MHe8mo+clzlcXNzz3JUytNJ4kTdsvV2R4eLibuO24cV6C1cep17UXVxc3A3clSHaQKSOP97ZcHFxN3OTL7UbpHvjlaKPAxcX9yZumzasB6MJCxcX92+5+dYlD0TWWW9VuLi4R7gJMZ9G8rRdZuHi4p7nzr147hClPaaNTn5wcXE3cKOjizL0nGv5Ko5ecHFxN3PvWoK0zVhzCyZcXNyT3CSwyIOPlYPYiz8LFxf3ILdtjEiK1NyCqbDj4uJu47YFpeXmYUeR7+Li4h7h5sUrXwbd1aJRV19cXNxbuW3xWplSXjRxcXGfz51b9BTBR3AfFxf3mdw8Ns2fFhsnXFzcg9w2JJ1r1GgnuRSL4OLiLnDvCkzbhs48TMHFxT3I/QQdsmzDq3Sc1wAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+lazyScripts.push('//s95.cnzz.com/z_stat.php?id=1278601976&web_id=1278601976')
+
+</script>
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '(●'◡'●)去哪里了呀！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
