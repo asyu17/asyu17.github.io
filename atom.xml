@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.asyu17.cn/"/>
-  <updated>2020-02-09T08:35:44.766Z</updated>
+  <updated>2020-02-16T06:32:00.679Z</updated>
   <id>https://www.asyu17.cn/</id>
   
   <author>
@@ -17,11 +17,48 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>【Python量化交易】——1、封装交易所API</title>
+    <link href="https://www.asyu17.cn/posts/79a07f16.html"/>
+    <id>https://www.asyu17.cn/posts/79a07f16.html</id>
+    <published>2020-02-16T05:30:01.000Z</published>
+    <updated>2020-02-16T06:32:00.679Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;【Python量化交易】——1、封装交易所API&quot;&gt;&lt;a href=&quot;#【Python量化交易】——1、封装交易所API&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="【Python量化交易】" scheme="https://www.asyu17.cn/categories/%E3%80%90Python%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E3%80%91/"/>
+    
+    
+      <category term="Python" scheme="https://www.asyu17.cn/tags/Python/"/>
+    
+      <category term="爬虫" scheme="https://www.asyu17.cn/tags/%E7%88%AC%E8%99%AB/"/>
+    
+      <category term="区块链" scheme="https://www.asyu17.cn/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/"/>
+    
+      <category term="数字货币" scheme="https://www.asyu17.cn/tags/%E6%95%B0%E5%AD%97%E8%B4%A7%E5%B8%81/"/>
+    
+      <category term="量化交易" scheme="https://www.asyu17.cn/tags/%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93/"/>
+    
+      <category term="API" scheme="https://www.asyu17.cn/tags/API/"/>
+    
+  </entry>
+  
+  <entry>
     <title>【Python爬虫实例学习篇】——7、获取免费IP代理进阶:在服务器上部署一个高可用代理池（2）</title>
     <link href="https://www.asyu17.cn/posts/12a0a7ff.html"/>
     <id>https://www.asyu17.cn/posts/12a0a7ff.html</id>
     <published>2020-02-09T08:00:01.000Z</published>
-    <updated>2020-02-09T08:35:44.766Z</updated>
+    <updated>2020-02-10T03:04:22.265Z</updated>
     
     <summary type="html">
     
